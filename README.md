@@ -12,6 +12,20 @@
 
 ### ▶ 바로 체험하기 → <https://notetester.github.io/CareerTunerDemo/>
 
+## 미리보기
+
+| 홈 | 회원 대시보드 |
+| --- | --- |
+| ![홈](docs/screenshots/home.png) | ![회원 대시보드](docs/screenshots/dashboard.png) |
+| **취업 분석** | **로그인** |
+| ![취업 분석](docs/screenshots/analysis.png) | ![로그인](docs/screenshots/login.png) |
+
+<p align="center">
+  <img src="docs/screenshots/mobile-home.png" alt="모바일 홈" width="280" />
+  <br />
+  <em>모바일 화면 — PWA로 설치해 앱처럼 사용할 수 있습니다</em>
+</p>
+
 ## 데모 이용 방법
 
 1. 위 링크로 접속합니다.
@@ -40,5 +54,5 @@
 ## 이 저장소에 대하여
 
 - 비공개 소스 저장소에서 GitHub Actions가 **빌드 산출물(정적 파일)만 자동 배포**하는 저장소입니다. 소스 코드는 포함되어 있지 않습니다.
-- 배포 때마다 `README.md`를 제외한 모든 파일이 새 빌드로 교체됩니다. 이 저장소로의 직접 기여(이슈/PR)는 받지 않습니다.
+- 배포 때마다 `README.md`와 `docs/`를 제외한 모든 파일이 새 빌드로 교체됩니다. 이 저장소로의 직접 기여(이슈/PR)는 받지 않습니다.
 - 데모 빌드는 배포 전에 자격증명·내부 주소 등 민감정보 포함 여부를 자동 검사한 뒤 게시됩니다.
