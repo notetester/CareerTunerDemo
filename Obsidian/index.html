@@ -66,9 +66,16 @@
               <p class="eyebrow">Map</p>
               <h2 id="graph-title">Keyword Relation Graph</h2>
             </div>
-            <span id="resultCount" class="status-pill">0 visible</span>
+            <div class="graph-tools" aria-label="그래프 보기 도구">
+              <button id="zoomOutButton" type="button" aria-label="축소">−</button>
+              <button id="zoomInButton" type="button" aria-label="확대">+</button>
+              <button id="fitButton" type="button">맞춤</button>
+              <button id="focusButton" type="button">선택</button>
+              <span id="resultCount" class="status-pill">0 visible</span>
+            </div>
           </div>
-          <svg id="graph" viewBox="0 0 1060 640" role="img" aria-label="CareerTuner 공개 지식맵 그래프"></svg>
+          <svg id="graph" viewBox="0 0 1360 860" role="img" aria-label="CareerTuner 공개 지식맵 그래프"></svg>
+          <p class="graph-hint">드래그해서 이동하고, 마우스 휠이나 버튼으로 확대·축소할 수 있습니다.</p>
         </section>
 
         <aside class="panel detail-panel" aria-labelledby="detailTitle">

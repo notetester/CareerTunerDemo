@@ -606,6 +606,22 @@ const detailBody = document.getElementById("detailBody");
 const detailPoints = document.getElementById("detailPoints");
 const resultCount = document.getElementById("resultCount");
 const neighborList = document.getElementById("neighborList");
+const zoomOutButton = document.getElementById("zoomOutButton");
+const zoomInButton = document.getElementById("zoomInButton");
+const fitButton = document.getElementById("fitButton");
+const focusButton = document.getElementById("focusButton");
+const graphViewBox = { width: 1360, height: 860 };
+const graphBounds = computeGraphBounds();
+const graphPan = {
+  minScale: 0.62,
+  maxScale: 2.4,
+  scale: 0.86,
+  x: 0,
+  y: 0,
+  dragging: false,
+  dragStart: null,
+  pointerId: null,
+};
 
 document.getElementById("metricNodes").textContent = String(nodes.length);
 document.getElementById("metricEdges").textContent = String(edges.length);
@@ -699,6 +715,93 @@ function selectNode(item) {
   render();
 }
 
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function computeGraphBounds() {
+  const padding = 70;
+  return nodes.reduce((bounds, item) => ({
+    minX: Math.min(bounds.minX, item.x - item.radius - padding),
+    maxX: Math.max(bounds.maxX, item.x + item.radius + padding),
+    minY: Math.min(bounds.minY, item.y - item.radius - padding),
+    maxY: Math.max(bounds.maxY, item.y + item.radius + padding),
+  }), {
+    minX: Infinity,
+    maxX: -Infinity,
+    minY: Infinity,
+    maxY: -Infinity,
+  });
+}
+
+function getPanRange(axis) {
+  const isX = axis === "x";
+  const viewportSize = isX ? graphViewBox.width : graphViewBox.height;
+  const minBound = isX ? graphBounds.minX : graphBounds.minY;
+  const maxBound = isX ? graphBounds.maxX : graphBounds.maxY;
+  const margin = 120;
+  let min = viewportSize - maxBound * graphPan.scale - margin;
+  let max = margin - minBound * graphPan.scale;
+
+  if (min > max) {
+    const center = (viewportSize - (minBound + maxBound) * graphPan.scale) / 2;
+    min = center - margin;
+    max = center + margin;
+  }
+
+  return { min, max };
+}
+
+function clampPan() {
+  graphPan.scale = clamp(graphPan.scale, graphPan.minScale, graphPan.maxScale);
+  const rangeX = getPanRange("x");
+  const rangeY = getPanRange("y");
+  graphPan.x = clamp(graphPan.x, rangeX.min, rangeX.max);
+  graphPan.y = clamp(graphPan.y, rangeY.min, rangeY.max);
+}
+
+function getGraphPoint(event) {
+  const rect = graph.getBoundingClientRect();
+  return {
+    x: ((event.clientX - rect.left) / rect.width) * graphViewBox.width,
+    y: ((event.clientY - rect.top) / rect.height) * graphViewBox.height,
+  };
+}
+
+function zoomGraph(factor, origin = { x: graphViewBox.width / 2, y: graphViewBox.height / 2 }) {
+  const previousScale = graphPan.scale;
+  const nextScale = clamp(previousScale * factor, graphPan.minScale, graphPan.maxScale);
+  const ratio = nextScale / previousScale;
+  graphPan.x = origin.x - ratio * (origin.x - graphPan.x);
+  graphPan.y = origin.y - ratio * (origin.y - graphPan.y);
+  graphPan.scale = nextScale;
+  clampPan();
+  updateGraphTransform();
+}
+
+function resetGraphView() {
+  graphPan.scale = 0.86;
+  graphPan.x = 0;
+  graphPan.y = 0;
+  clampPan();
+  updateGraphTransform();
+}
+
+function focusSelectedNode() {
+  if (!state.selected) return;
+  graphPan.scale = Math.max(graphPan.scale, 1.08);
+  graphPan.x = (graphViewBox.width / 2 - state.selected.x * graphPan.scale);
+  graphPan.y = (graphViewBox.height / 2 - state.selected.y * graphPan.scale);
+  clampPan();
+  updateGraphTransform();
+}
+
+function updateGraphTransform() {
+  const viewport = graph.querySelector(".graph-viewport");
+  if (!viewport) return;
+  viewport.setAttribute("transform", `translate(${graphPan.x} ${graphPan.y}) scale(${graphPan.scale})`);
+}
+
 function renderFilters() {
   const all = document.createElement("button");
   all.type = "button";
@@ -728,6 +831,8 @@ function renderFilters() {
 function renderGraph() {
   graph.textContent = "";
   const fragment = document.createDocumentFragment();
+  const viewport = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  viewport.classList.add("graph-viewport");
 
   edges.forEach((edge) => {
     const from = getNode(edge.from);
@@ -740,7 +845,7 @@ function renderGraph() {
     line.classList.add("edge", edge.strength);
     if (edgeTouchesSelection(edge)) line.classList.add("selected");
     if (!edgeTouchesVisible(edge)) line.classList.add("dimmed");
-    fragment.append(line);
+    viewport.append(line);
   });
 
   nodes.forEach((item) => {
@@ -781,10 +886,12 @@ function renderGraph() {
     } else {
       group.append(circle);
     }
-    fragment.append(group);
+    viewport.append(group);
   });
 
+  fragment.append(viewport);
   graph.append(fragment);
+  updateGraphTransform();
 }
 
 function shouldShowLabel(item) {
@@ -859,6 +966,54 @@ searchInput.addEventListener("input", (event) => {
   state.query = event.target.value;
   render();
 });
+
+graph.addEventListener("pointerdown", (event) => {
+  if (event.button !== 0) return;
+  graphPan.dragging = true;
+  graphPan.pointerId = event.pointerId;
+  graphPan.dragStart = {
+    x: event.clientX,
+    y: event.clientY,
+    panX: graphPan.x,
+    panY: graphPan.y,
+  };
+  graph.classList.add("panning");
+  graph.setPointerCapture(event.pointerId);
+});
+
+graph.addEventListener("pointermove", (event) => {
+  if (!graphPan.dragging || graphPan.pointerId !== event.pointerId) return;
+  const rect = graph.getBoundingClientRect();
+  const dx = ((event.clientX - graphPan.dragStart.x) / rect.width) * graphViewBox.width;
+  const dy = ((event.clientY - graphPan.dragStart.y) / rect.height) * graphViewBox.height;
+  graphPan.x = graphPan.dragStart.panX + dx;
+  graphPan.y = graphPan.dragStart.panY + dy;
+  clampPan();
+  updateGraphTransform();
+});
+
+function stopPanning(event) {
+  if (graphPan.pointerId !== event.pointerId) return;
+  graphPan.dragging = false;
+  graphPan.pointerId = null;
+  graphPan.dragStart = null;
+  graph.classList.remove("panning");
+  if (graph.hasPointerCapture(event.pointerId)) graph.releasePointerCapture(event.pointerId);
+}
+
+graph.addEventListener("pointerup", stopPanning);
+graph.addEventListener("pointercancel", stopPanning);
+
+graph.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  const factor = event.deltaY < 0 ? 1.12 : 0.89;
+  zoomGraph(factor, getGraphPoint(event));
+}, { passive: false });
+
+zoomOutButton.addEventListener("click", () => zoomGraph(0.86));
+zoomInButton.addEventListener("click", () => zoomGraph(1.16));
+fitButton.addEventListener("click", resetGraphView);
+focusButton.addEventListener("click", focusSelectedNode);
 
 renderFilters();
 selectNode(nodes[0]);
