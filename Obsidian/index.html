@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="CareerTuner 공개 심사용 Obsidian 지식맵 요약 뷰어"
+    />
+    <title>CareerTuner Public Knowledge Map</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="CareerTuner 데모 홈">
+        <span class="brand-mark">CT</span>
+        <span>
+          <strong>CareerTuner</strong>
+          <small>Public Knowledge Map</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="주요 링크">
+        <a href="../">Demo</a>
+        <a href="https://github.com/notetester/CareerTunerDemo">GitHub Pages Repo</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="overview" aria-labelledby="overview-title">
+        <div class="overview-copy">
+          <p class="eyebrow">Sanitized Obsidian View</p>
+          <h1 id="overview-title">
+            <span>심사용으로 정리한</span>
+            <span>공개 지식맵</span>
+          </h1>
+          <p>
+            원본 Obsidian vault는 내부 판단과 비공개 자료를 포함하므로 별도 저장소에 유지하고,
+            이 화면에는 공개 가능한 제품 구조, 기술 축, AI/ML 범위, 배포 산출물만 재구성했습니다.
+          </p>
+        </div>
+        <dl class="metrics" aria-label="공개 요약 지표">
+          <div>
+            <dt id="metricNodes">0</dt>
+            <dd>public nodes</dd>
+          </div>
+          <div>
+            <dt id="metricEdges">0</dt>
+            <dd>curated links</dd>
+          </div>
+          <div>
+            <dt id="metricAreas">0</dt>
+            <dd>review areas</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="control-row" aria-label="지식맵 필터">
+        <label class="search">
+          <span>검색</span>
+          <input id="searchInput" type="search" autocomplete="off" placeholder="제품, AI, 배포, 모바일..." />
+        </label>
+        <div id="areaFilters" class="segments" role="group" aria-label="영역 필터"></div>
+      </section>
+
+      <section class="workspace" aria-label="공개 지식맵">
+        <section class="panel graph-panel" aria-labelledby="graph-title">
+          <div class="panel-title">
+            <div>
+              <p class="eyebrow">Map</p>
+              <h2 id="graph-title">Curated Public Graph</h2>
+            </div>
+            <span id="resultCount" class="status-pill">0 visible</span>
+          </div>
+          <svg id="graph" viewBox="0 0 1060 640" role="img" aria-label="CareerTuner 공개 지식맵 그래프"></svg>
+        </section>
+
+        <aside class="panel detail-panel" aria-labelledby="detailTitle">
+          <p id="detailArea" class="eyebrow">Public</p>
+          <h2 id="detailTitle">CareerTuner</h2>
+          <p id="detailBody" class="detail-body"></p>
+          <ul id="detailPoints" class="point-list"></ul>
+        </aside>
+      </section>
+
+      <section class="panel" aria-labelledby="cards-title">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">Review Route</p>
+            <h2 id="cards-title">핵심 공개 카드</h2>
+          </div>
+        </div>
+        <div id="cards" class="cards"></div>
+      </section>
+
+      <section class="panel boundary" aria-labelledby="boundary-title">
+        <div>
+          <p class="eyebrow">Boundary</p>
+          <h2 id="boundary-title">공개본과 원본 vault의 역할 분리</h2>
+        </div>
+        <p>
+          공개본은 심사자가 프로젝트의 목적과 완성도를 빠르게 파악하는 안내면입니다. 내부 검토 노트,
+          원자료, 상세 실험 흔적, 비공개 운영 판단은 원본 Obsidian vault에 남기고, 데모에는 공개 가능한
+          구조와 결과만 고정합니다.
+        </p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
