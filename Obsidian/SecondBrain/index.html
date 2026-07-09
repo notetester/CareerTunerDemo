@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="CareerTuner Obsidian, Graphify, LLM Wiki 기반 second brain 공개 뷰어"
+    />
+    <title>CareerTuner Second Brain</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="CareerTuner 공개 지식맵으로 이동">
+        <span class="brand-mark">CT</span>
+        <span>
+          <strong>CareerTuner</strong>
+          <small>Second Brain</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="주요 링크">
+        <a href="../">Knowledge Map</a>
+        <a href="../../">Demo Home</a>
+        <a href="https://github.com/notetester/CareerTunerDemo">GitHub Pages Repo</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Obsidian + Graphify + LLM Wiki</p>
+          <h1 id="hero-title">
+            <span>AI 에이전트를 위한</span>
+            <span>프로젝트 두 번째 뇌</span>
+          </h1>
+          <p>
+            원천 자료는 비공개 vault에 보관합니다. LLM Wiki로 지식을 누적하고,
+            Graphify graph와 공개 demo로 같은 구조를 탐색하게 합니다.
+          </p>
+        </div>
+        <dl class="metrics" aria-label="second brain 공개 지표">
+          <div>
+            <dt id="metricNodes">0</dt>
+            <dd>public nodes</dd>
+          </div>
+          <div>
+            <dt id="metricEdges">0</dt>
+            <dd>relations</dd>
+          </div>
+          <div>
+            <dt id="metricSources">0</dt>
+            <dd>source families</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="pipeline" aria-label="second brain pipeline">
+        <article>
+          <span class="step">1</span>
+          <h2>Raw Sources</h2>
+          <p>LLM Wiki 원문, Graphify 문서, 프로젝트 문서, 릴리즈 판단은 원본 계층에 보관합니다.</p>
+        </article>
+        <article>
+          <span class="step">2</span>
+          <h2>Wiki Synthesis</h2>
+          <p>agent가 index, log, concept, runbook을 갱신해 지식이 chat 밖에서 누적되게 합니다.</p>
+        </article>
+        <article>
+          <span class="step">3</span>
+          <h2>Graphify Memory</h2>
+          <p>graph.json과 GRAPH_REPORT를 통해 hub, bridge, 관련 문서 후보를 빠르게 찾습니다.</p>
+        </article>
+        <article>
+          <span class="step">4</span>
+          <h2>Public Projection</h2>
+          <p>secret과 raw output을 제거한 subset만 이 GitHub Pages 경로에 공개합니다.</p>
+        </article>
+      </section>
+
+      <section class="control-row" aria-label="그래프 필터">
+        <label class="search">
+          <span>검색</span>
+          <input id="searchInput" type="search" autocomplete="off" placeholder="Graphify, ingest, Codex, public..." />
+        </label>
+        <div id="groupFilters" class="segments" role="group" aria-label="그룹 필터"></div>
+      </section>
+
+      <section class="workspace" aria-label="second brain graph explorer">
+        <section class="panel graph-panel" aria-labelledby="graph-title">
+          <div class="panel-title">
+            <div>
+              <p class="eyebrow">Graph Explorer</p>
+              <h2 id="graph-title">Agent Memory Relation Graph</h2>
+            </div>
+            <div class="graph-tools" aria-label="그래프 도구">
+              <button id="zoomOutButton" type="button" aria-label="축소">−</button>
+              <button id="zoomInButton" type="button" aria-label="확대">+</button>
+              <button id="fitButton" type="button">맞춤</button>
+              <button id="focusButton" type="button">선택</button>
+              <span id="resultCount" class="status-pill">0 visible</span>
+            </div>
+          </div>
+          <svg id="graph" viewBox="0 0 1280 780" role="img" aria-label="CareerTuner second brain 관계 그래프"></svg>
+          <p class="graph-hint">그래프를 드래그해 이동하고, 마우스 휠이나 버튼으로 확대·축소할 수 있습니다.</p>
+        </section>
+
+        <aside class="panel detail-panel" aria-labelledby="detailTitle">
+          <p id="detailGroup" class="eyebrow">Hub</p>
+          <h2 id="detailTitle">CareerTuner Second Brain</h2>
+          <p id="detailSummary" class="detail-body"></p>
+          <div class="neighbor-block">
+            <h3>연결된 노드</h3>
+            <div id="neighborList" class="neighbor-list"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel ladder" aria-labelledby="ladder-title">
+        <div>
+          <p class="eyebrow">Agent Protocol</p>
+          <h2 id="ladder-title">3-layer query rule</h2>
+        </div>
+        <ol>
+          <li>
+            <strong>Graph query</strong>
+            <span>graph.json, GRAPH_REPORT, wiki/index에서 관련 hub와 후보 문서를 먼저 찾습니다.</span>
+          </li>
+          <li>
+            <strong>Obsidian wiki search</strong>
+            <span>concept, system, operation page를 읽어 결정과 synthesis를 확인합니다.</span>
+          </li>
+          <li>
+            <strong>Raw/source reading</strong>
+            <span>구현 변경이나 정본 확인이 필요할 때만 raw와 source tree로 내려갑니다.</span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="panel" aria-labelledby="sources-title">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">Source Index</p>
+            <h2 id="sources-title">공개 가능한 참고 자료와 적용점</h2>
+          </div>
+        </div>
+        <div id="sourceCards" class="source-grid"></div>
+      </section>
+
+      <section class="panel boundary" aria-labelledby="boundary-title">
+        <div>
+          <p class="eyebrow">Boundary</p>
+          <h2 id="boundary-title">원본 vault와 공개 demo 분리</h2>
+        </div>
+        <p>
+          이 화면은 비공개 Obsidian vault의 전체 내용이 아니라 공개 가능한 구조만 재구성한 projection입니다.
+          API 키, 계정, 실제 endpoint, raw output, 내부 판단 메모는 원본 vault와 private submodule에만 남깁니다.
+        </p>
+      </section>
+    </main>
+
+    <script src="graph-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
