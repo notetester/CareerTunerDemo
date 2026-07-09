@@ -281,6 +281,30 @@ input[type="search"] {
   white-space: nowrap;
 }
 
+.graph-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.graph-tools button {
+  min-height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  color: var(--text);
+  padding: 5px 10px;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.graph-tools button:hover,
+.graph-tools button:focus-visible {
+  border-color: var(--teal);
+}
+
 .graph-panel {
   min-height: 820px;
 }
@@ -301,6 +325,20 @@ input[type="search"] {
     linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
     #0b0e12;
   background-size: 36px 36px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+#graph.panning {
+  cursor: grabbing;
+}
+
+.graph-hint {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
 }
 
 .edge {
@@ -554,6 +592,10 @@ input[type="search"] {
 
   .metrics {
     grid-template-columns: 1fr;
+  }
+
+  .graph-tools {
+    justify-content: flex-start;
   }
 
   #graph {
