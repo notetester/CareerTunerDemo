@@ -1,24 +1,26 @@
 const graphData = window.SECOND_BRAIN_GRAPH;
-const { groups, nodes, edges, sources } = graphData;
+const { groups, nodes, highlights, graphifyRuns, wikiPages, codeCards, sources } = graphData;
 
-const pinnedPositions = {
-  "second-brain": [640, 390],
-  "career-architecture": [585, 115],
-  submodule: [460, 150],
-  graphify: [760, 210],
-  obsidian: [1040, 340],
-  "public-demo": [1030, 610],
-  "agent-ladder": [700, 600],
-  "llm-wiki": [225, 555],
-  raw: [295, 250],
-  "wiki-index": [370, 315],
-  "secret-boundary": [1110, 690],
-};
-
+const edges = buildEdges(nodes);
 const state = {
   group: "all",
   query: "",
   selected: nodes[0],
+};
+
+const pinnedPositions = {
+  "career-tuner": [640, 390],
+  "portfolio-graph": [640, 285],
+  "code-map": [640, 500],
+  "graphify-extract": [135, 410],
+  "spring-api": [960, 190],
+  "react-spa": [330, 585],
+  "ai-orchestrator": [815, 575],
+  "schema": [1090, 390],
+  "web-demo": [690, 130],
+  "obsidian-wiki": [160, 315],
+  "application-case": [250, 190],
+  "admin-ui": [560, 665],
 };
 
 const graph = document.getElementById("graph");
@@ -27,19 +29,25 @@ const searchInput = document.getElementById("searchInput");
 const detailGroup = document.getElementById("detailGroup");
 const detailTitle = document.getElementById("detailTitle");
 const detailSummary = document.getElementById("detailSummary");
+const detailPoints = document.getElementById("detailPoints");
+const detailPath = document.getElementById("detailPath");
 const neighborList = document.getElementById("neighborList");
 const resultCount = document.getElementById("resultCount");
+const highlightGrid = document.getElementById("highlightGrid");
+const runTable = document.getElementById("runTable");
+const wikiGrid = document.getElementById("wikiGrid");
+const codeGrid = document.getElementById("codeGrid");
 const sourceCards = document.getElementById("sourceCards");
 const zoomOutButton = document.getElementById("zoomOutButton");
 const zoomInButton = document.getElementById("zoomInButton");
 const fitButton = document.getElementById("fitButton");
 const focusButton = document.getElementById("focusButton");
 
-const graphViewBox = { width: 1280, height: 780 };
+const graphViewBox = { width: 1280, height: 820 };
 const graphPan = {
-  minScale: 0.68,
-  maxScale: 2.4,
-  scale: 0.9,
+  minScale: 0.56,
+  maxScale: 2.7,
+  scale: 0.76,
   x: 0,
   y: 0,
   dragging: false,
@@ -49,10 +57,25 @@ const graphPan = {
 
 applyLayout();
 const graphBounds = computeGraphBounds();
+fitGraphView({ update: false });
 
 document.getElementById("metricNodes").textContent = String(nodes.length);
 document.getElementById("metricEdges").textContent = String(edges.length);
-document.getElementById("metricSources").textContent = String(sources.length);
+document.getElementById("metricGraphify").textContent = "26,886";
+document.getElementById("metricScope").textContent = "2,870";
+
+function buildEdges(items) {
+  const known = new Set(items.map((item) => item.id));
+  const map = new Map();
+  items.forEach((item) => {
+    (item.links || []).forEach((target) => {
+      if (!known.has(target) || item.id === target) return;
+      const key = [item.id, target].sort().join("__");
+      if (!map.has(key)) map.set(key, { source: item.id, target, kind: "related" });
+    });
+  });
+  return [...map.values()];
+}
 
 function applyLayout() {
   Object.entries(pinnedPositions).forEach(([id, [x, y]]) => {
@@ -68,7 +91,7 @@ function applyLayout() {
     const group = groups[groupKey];
     bucket.forEach((item, index) => {
       const angle = (-Math.PI / 2) + (index / Math.max(bucket.length, 1)) * Math.PI * 2;
-      const ring = 70 + (index % 3) * 34;
+      const ring = 78 + (index % 4) * 34 + Math.floor(index / 10) * 16;
       item.x = Math.round(group.cx + Math.cos(angle) * ring);
       item.y = Math.round(group.cy + Math.sin(angle) * ring);
     });
@@ -90,14 +113,17 @@ function getNeighbors(id) {
 
 function matches(item) {
   const groupMatch = state.group === "all" || item.group === state.group;
+  const query = state.query.trim().toLowerCase();
   const text = [
     item.label,
     item.type,
     item.summary,
+    item.path,
     groups[item.group].label,
+    ...(item.points || []),
     ...getNeighbors(item.id).map((neighbor) => neighbor.label),
   ].join(" ").toLowerCase();
-  return groupMatch && text.includes(state.query.trim().toLowerCase());
+  return groupMatch && text.includes(query);
 }
 
 function isRelatedToSelection(item) {
@@ -118,6 +144,13 @@ function selectNode(item) {
   detailGroup.textContent = `${groups[item.group].label} · ${item.type}`;
   detailTitle.textContent = item.label;
   detailSummary.textContent = item.summary;
+  detailPath.textContent = item.path || "";
+  detailPoints.textContent = "";
+  (item.points || []).forEach((point) => {
+    const li = document.createElement("li");
+    li.textContent = point;
+    detailPoints.append(li);
+  });
   renderNeighbors();
   render();
 }
@@ -127,7 +160,7 @@ function clamp(value, min, max) {
 }
 
 function computeGraphBounds() {
-  const padding = 90;
+  const padding = 100;
   return nodes.reduce((bounds, item) => ({
     minX: Math.min(bounds.minX, item.x - item.weight - padding),
     maxX: Math.max(bounds.maxX, item.x + item.weight + padding),
@@ -186,17 +219,22 @@ function zoomGraph(factor, origin = { x: graphViewBox.width / 2, y: graphViewBox
   updateGraphTransform();
 }
 
-function resetGraphView() {
-  graphPan.scale = 0.9;
-  graphPan.x = 0;
-  graphPan.y = 0;
+function fitGraphView({ update = true } = {}) {
+  const padding = 70;
+  const graphWidth = graphBounds.maxX - graphBounds.minX;
+  const graphHeight = graphBounds.maxY - graphBounds.minY;
+  const scaleX = (graphViewBox.width - padding * 2) / graphWidth;
+  const scaleY = (graphViewBox.height - padding * 2) / graphHeight;
+  graphPan.scale = clamp(Math.min(scaleX, scaleY), graphPan.minScale, 1.05);
+  graphPan.x = (graphViewBox.width - (graphBounds.minX + graphBounds.maxX) * graphPan.scale) / 2;
+  graphPan.y = (graphViewBox.height - (graphBounds.minY + graphBounds.maxY) * graphPan.scale) / 2;
   clampPan();
-  updateGraphTransform();
+  if (update) updateGraphTransform();
 }
 
 function focusSelectedNode() {
   if (!state.selected) return;
-  graphPan.scale = Math.max(graphPan.scale, 1.08);
+  graphPan.scale = Math.max(graphPan.scale, 1.1);
   graphPan.x = (graphViewBox.width / 2 - state.selected.x * graphPan.scale);
   graphPan.y = (graphViewBox.height / 2 - state.selected.y * graphPan.scale);
   clampPan();
@@ -301,7 +339,7 @@ function renderGraph() {
 function shouldShowLabel(item) {
   if (item.id === state.selected.id || isRelatedToSelection(item)) return true;
   if (!matches(item)) return false;
-  return item.weight >= 20 || state.query.trim().length > 0 || state.group !== "all";
+  return item.weight >= 18 || state.query.trim().length > 0 || state.group !== "all";
 }
 
 function renderNeighbors() {
@@ -312,10 +350,57 @@ function renderNeighbors() {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "neighbor";
-      button.innerHTML = `<span>${neighbor.label}</span><small>${groups[neighbor.group].label}</small>`;
+      button.innerHTML = `<span>${escapeHtml(neighbor.label)}</span><small>${escapeHtml(groups[neighbor.group].label)}</small>`;
       button.addEventListener("click", () => selectNode(neighbor));
       neighborList.append(button);
     });
+}
+
+function renderHighlights() {
+  highlightGrid.textContent = "";
+  highlights.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "highlight-card";
+    card.innerHTML = `
+      <strong>${escapeHtml(item.metric)}</strong>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+    `;
+    highlightGrid.append(card);
+  });
+}
+
+function renderRunTable() {
+  runTable.textContent = "";
+  graphifyRuns.forEach((item) => {
+    const row = document.createElement("article");
+    row.className = "run-row";
+    row.innerHTML = `
+      <div>
+        <strong>${escapeHtml(item.label)}</strong>
+        <small>${escapeHtml(item.scope)}</small>
+      </div>
+      <span>${item.files.toLocaleString()} files</span>
+      <span>${item.nodes.toLocaleString()} nodes</span>
+      <span>${item.edges.toLocaleString()} edges</span>
+      <p>${escapeHtml(item.note)}</p>
+    `;
+    runTable.append(row);
+  });
+}
+
+function renderWiki() {
+  wikiGrid.textContent = "";
+  wikiPages.forEach((item) => {
+    wikiGrid.append(createInfoCard(item.title, item.summary, item.path, ["Wiki"]));
+  });
+}
+
+function renderCodeCards() {
+  codeGrid.textContent = "";
+  codeCards.forEach((item) => {
+    codeGrid.append(createInfoCard(item.title, item.summary, item.path, item.tags));
+  });
 }
 
 function renderSources() {
@@ -323,22 +408,45 @@ function renderSources() {
   sources.forEach((item) => {
     const card = document.createElement("article");
     card.className = "source-card";
-    const heading = document.createElement("h3");
-    heading.textContent = item.title;
-    const summary = document.createElement("p");
-    summary.textContent = item.summary;
-    const link = document.createElement("a");
-    link.href = item.href;
-    link.textContent = "Source";
-    card.append(heading, summary, link);
+    const isExternal = /^https?:\/\//.test(item.href);
+    card.innerHTML = `
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+      <a href="${escapeAttribute(item.href)}"${isExternal ? ' target="_blank" rel="noreferrer"' : ""}>Source</a>
+    `;
     sourceCards.append(card);
   });
+}
+
+function createInfoCard(title, summary, path, tags) {
+  const card = document.createElement("article");
+  card.className = "info-card";
+  card.innerHTML = `
+    <h3>${escapeHtml(title)}</h3>
+    <p>${escapeHtml(summary)}</p>
+    <code>${escapeHtml(path)}</code>
+    <div class="tag-row">${(tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+  `;
+  return card;
 }
 
 function render() {
   const visible = nodes.filter(matches);
   resultCount.textContent = `${visible.length} visible`;
   renderGraph();
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replaceAll("`", "&#096;");
 }
 
 searchInput.addEventListener("input", (event) => {
@@ -391,9 +499,13 @@ graph.addEventListener("wheel", (event) => {
 
 zoomOutButton.addEventListener("click", () => zoomGraph(0.86));
 zoomInButton.addEventListener("click", () => zoomGraph(1.16));
-fitButton.addEventListener("click", resetGraphView);
+fitButton.addEventListener("click", () => fitGraphView());
 focusButton.addEventListener("click", focusSelectedNode);
 
 renderFilters();
+renderHighlights();
+renderRunTable();
+renderWiki();
+renderCodeCards();
 renderSources();
 selectNode(nodes[0]);
