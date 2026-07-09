@@ -103,7 +103,7 @@ a {
 }
 
 main {
-  width: min(1440px, calc(100% - 32px));
+  width: min(1720px, calc(100% - 32px));
   margin: 24px auto 52px;
 }
 
@@ -250,7 +250,7 @@ input[type="search"] {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 370px;
+  grid-template-columns: minmax(0, 1fr) 420px;
   gap: 16px;
   margin-top: 16px;
 }
@@ -281,16 +281,19 @@ input[type="search"] {
   white-space: nowrap;
 }
 
-.graph-panel,
+.graph-panel {
+  min-height: 820px;
+}
+
 .detail-panel {
-  min-height: 690px;
+  min-height: 820px;
 }
 
 #graph {
   display: block;
   width: 100%;
-  min-height: 560px;
-  height: min(70vh, 620px);
+  min-height: 690px;
+  height: min(78vh, 780px);
   border: 1px solid var(--border);
   border-radius: 8px;
   background:
@@ -301,12 +304,20 @@ input[type="search"] {
 }
 
 .edge {
-  stroke: #506070;
-  stroke-width: 1.35;
+  stroke: #546273;
+  stroke-width: 1.05;
+  opacity: 0.55;
 }
 
 .edge.strong {
-  stroke-width: 2.4;
+  stroke-width: 1.9;
+  opacity: 0.78;
+}
+
+.edge.selected {
+  stroke: var(--teal);
+  stroke-width: 2.6;
+  opacity: 0.95;
 }
 
 .node {
@@ -320,7 +331,7 @@ input[type="search"] {
 
 .node text {
   fill: var(--text);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 750;
   paint-order: stroke;
   stroke: #0b0e12;
@@ -330,18 +341,23 @@ input[type="search"] {
 
 .node .sub {
   fill: var(--muted);
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 650;
 }
 
 .node.dimmed,
 .edge.dimmed {
-  opacity: 0.16;
+  opacity: 0.08;
+}
+
+.node.related circle {
+  stroke: rgba(255, 255, 255, 0.74);
+  stroke-width: 2.2;
 }
 
 .node.selected circle {
   stroke: var(--text);
-  stroke-width: 3px;
+  stroke-width: 3.4px;
 }
 
 .detail-panel {
@@ -369,6 +385,37 @@ input[type="search"] {
   background: var(--surface-strong);
   color: var(--text);
   line-height: 1.55;
+}
+
+.neighbor-block {
+  margin-top: 18px;
+}
+
+.neighbor-block h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.neighbor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.neighbor {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--text);
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.neighbor small {
+  color: var(--muted);
 }
 
 .cards {
@@ -399,6 +446,24 @@ input[type="search"] {
   color: #171209;
   font-size: 12px;
   font-weight: 800;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card-meta .tag {
+  margin-top: 0;
+}
+
+.degree {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .empty-state {
@@ -492,6 +557,6 @@ input[type="search"] {
   }
 
   #graph {
-    min-height: 520px;
+    min-height: 560px;
   }
 }
