@@ -379,6 +379,40 @@ a {
   font-size: 12px;
 }
 
+.source-count {
+  margin-right: 4px;
+  color: #5f6976;
+  font-size: 12px;
+}
+
+.article-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 16px;
+  color: #6d7784;
+  font-size: 12px;
+}
+
+.article-sources > span {
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.article-sources a {
+  color: #176d66;
+  font-weight: 750;
+  text-decoration: underline;
+  text-decoration-color: #9ecbc6;
+  text-underline-offset: 3px;
+}
+
+.article-sources a:hover {
+  color: #0f554f;
+  text-decoration-color: currentColor;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
