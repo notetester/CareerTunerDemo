@@ -95,6 +95,7 @@ function renderNavigation() {
 
 function renderArticle(page) {
   const group = groupById.get(page.group);
+  const sources = page.sources || [];
   breadcrumb.textContent = `Wiki / ${group.label} / ${page.title}`;
   document.title = `${page.title} | CareerTuner Public Wiki`;
 
@@ -105,8 +106,15 @@ function renderArticle(page) {
       <p class="article-summary">${escapeHtml(page.summary)}</p>
       <div class="article-meta">
         <time datetime="${escapeAttribute(page.updated)}">Updated ${escapeHtml(page.updated)}</time>
+        ${sources.length > 0 ? `<span class="source-count">${sources.length} public source${sources.length === 1 ? "" : "s"}</span>` : ""}
         ${(page.tags || []).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
       </div>
+      ${sources.length > 0 ? `
+        <div class="article-sources" aria-label="Page provenance">
+          <span>Provenance</span>
+          ${sources.map((source) => `<a href="${escapeAttribute(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.label)}</a>`).join("")}
+        </div>
+      ` : ""}
     </header>
     ${page.sections.map((section) => `
       <section id="section-${escapeAttribute(section.id)}" class="article-section">
@@ -221,10 +229,20 @@ function renderRelatedPages(page) {
 }
 
 function renderCurrentLocation({ scroll = true } = {}) {
-  const locationState = parseHash();
+  let locationState = parseHash();
+  if (!locationState.valid) {
+    window.history.replaceState(null, "", "#index");
+    locationState = { pageId: "index", sectionId: "", valid: true };
+  }
+
+  const page = pageById.get(locationState.pageId);
+  if (locationState.sectionId && !page.sections.some((section) => section.id === locationState.sectionId)) {
+    window.history.replaceState(null, "", `#${locationState.pageId}`);
+    locationState.sectionId = "";
+  }
+
   state.pageId = locationState.pageId;
   state.sectionId = locationState.sectionId;
-  const page = pageById.get(state.pageId);
 
   renderNavigation();
   renderArticle(page);

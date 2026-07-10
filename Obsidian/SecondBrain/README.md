@@ -4,6 +4,7 @@
 
 - 원본 Obsidian vault와 raw Graphify 산출물은 비공개 submodule과 임시 작업 경로에 유지한다.
 - 공개본은 실제 code-only Graphify 추출 수치와 repo-relative 코드 경로를 함께 보여준다.
+- Wiki cluster는 persistent architecture, provenance, compounding, ingest/query/lint, search와 human review까지 확장한 110개 전체 노드와 17개 공개 Wiki 카드를 포함한다.
 - 전체 원본 `graph.json`은 절대경로와 대용량 edge 정보를 포함하므로 그대로 공개하지 않고, 리뷰어가 이해하기 쉬운 curated graph로 압축한다.
 - API key, DB 계정값, 실제 비밀번호, 개인 credential, 로컬 절대경로는 포함하지 않는다.
 
