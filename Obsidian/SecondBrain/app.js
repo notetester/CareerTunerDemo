@@ -399,7 +399,7 @@ function renderRunTable() {
 function renderWiki() {
   wikiGrid.textContent = "";
   wikiPages.forEach((item) => {
-    wikiGrid.append(createInfoCard(item.title, item.summary, item.path, ["Wiki"]));
+    wikiGrid.append(createInfoCard(item.title, item.summary, item.path, ["Wiki"], `../Wiki/#${item.wikiId}`));
   });
 }
 
@@ -425,7 +425,7 @@ function renderSources() {
   });
 }
 
-function createInfoCard(title, summary, path, tags) {
+function createInfoCard(title, summary, path, tags, href = "") {
   const card = document.createElement("article");
   card.className = "info-card";
   card.innerHTML = `
@@ -433,6 +433,7 @@ function createInfoCard(title, summary, path, tags) {
     <p>${escapeHtml(summary)}</p>
     <code>${escapeHtml(path)}</code>
     <div class="tag-row">${(tags || []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+    ${href ? `<a class="card-link" href="${escapeAttribute(href)}">Wiki에서 읽기</a>` : ""}
   `;
   return card;
 }

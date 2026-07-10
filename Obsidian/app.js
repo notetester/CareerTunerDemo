@@ -844,6 +844,8 @@ function renderGraph() {
     line.setAttribute("y1", from.y);
     line.setAttribute("x2", to.x);
     line.setAttribute("y2", to.y);
+    line.setAttribute("stroke", edge.strength === "strong" ? "#7b8fa7" : "#66788e");
+    line.setAttribute("vector-effect", "non-scaling-stroke");
     line.classList.add("edge", edge.strength);
     if (edgeTouchesSelection(edge)) line.classList.add("selected");
     if (!edgeTouchesVisible(edge)) line.classList.add("dimmed");
