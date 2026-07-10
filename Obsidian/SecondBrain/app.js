@@ -31,6 +31,7 @@ const detailTitle = document.getElementById("detailTitle");
 const detailSummary = document.getElementById("detailSummary");
 const detailPoints = document.getElementById("detailPoints");
 const detailPath = document.getElementById("detailPath");
+const detailWikiLink = document.getElementById("detailWikiLink");
 const neighborList = document.getElementById("neighborList");
 const resultCount = document.getElementById("resultCount");
 const selectionStatus = document.getElementById("selectionStatus");
@@ -147,6 +148,8 @@ function selectNode(item) {
   detailTitle.textContent = item.label;
   detailSummary.textContent = item.summary;
   detailPath.textContent = item.path || "";
+  detailWikiLink.href = `../Wiki/#evidence/${encodeURIComponent(item.id)}`;
+  detailWikiLink.setAttribute("aria-label", `${item.label} Wiki evidence 읽기`);
   detailPoints.textContent = "";
   (item.points || []).forEach((point) => {
     const li = document.createElement("li");

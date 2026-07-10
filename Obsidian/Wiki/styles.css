@@ -413,6 +413,47 @@ a {
   text-decoration-color: currentColor;
 }
 
+.article-paths {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.article-paths > span {
+  color: #6d7784;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.article-paths > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.article-paths code {
+  max-width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #d8dde3;
+  border-radius: 4px;
+  color: #36414d;
+  background: #f3f5f7;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.graph-return {
+  display: inline-flex;
+  margin-top: 16px;
+  color: #176d66;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
