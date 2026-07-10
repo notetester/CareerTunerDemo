@@ -396,6 +396,13 @@ input[type="search"] {
   white-space: nowrap;
 }
 
+.selection-status {
+  max-width: 220px;
+  overflow: hidden;
+  color: var(--teal);
+  text-overflow: ellipsis;
+}
+
 #graph {
   display: block;
   width: 100%;
@@ -427,6 +434,7 @@ input[type="search"] {
   stroke: #586679;
   stroke-width: 1.05;
   opacity: 0.48;
+  transition: opacity 140ms ease, stroke 140ms ease, stroke-width 140ms ease;
 }
 
 .edge.selected {
@@ -437,6 +445,8 @@ input[type="search"] {
 
 .node {
   cursor: pointer;
+  pointer-events: all;
+  transition: opacity 140ms ease;
 }
 
 .node circle {
@@ -460,9 +470,12 @@ input[type="search"] {
   font-weight: 650;
 }
 
-.node.dimmed,
+.node.dimmed {
+  opacity: 0.2;
+}
+
 .edge.dimmed {
-  opacity: 0.08;
+  opacity: 0.22;
 }
 
 .node.related circle {
