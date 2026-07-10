@@ -509,6 +509,25 @@ input[type="search"] {
   overflow-wrap: anywhere;
 }
 
+.detail-wiki-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid rgba(79, 209, 197, 0.45);
+  border-radius: 6px;
+  color: var(--teal);
+  background: rgba(79, 209, 197, 0.08);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.detail-wiki-link:hover {
+  border-color: var(--teal);
+  background: rgba(79, 209, 197, 0.14);
+}
+
 .point-list {
   display: grid;
   gap: 9px;

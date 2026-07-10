@@ -152,6 +152,19 @@ window.SECOND_BRAIN_GRAPH = (() => {
   ];
 
   const wikiPages = [
+    page("CareerTuner Project Overview", "지원 건 중심 제품 가치, end-to-end workflow와 구현 platform.", "docs/obsidian-vault/wiki/project/project-overview.md", "project/overview"),
+    page("Application Case and Product Flow", "공고 revision, 분석 workspace와 lifecycle의 핵심 aggregate.", "docs/obsidian-vault/wiki/project/application-case-and-product-flow.md", "project/application-case"),
+    page("User and Admin Experience", "사용자 IA, responsive UX와 paired admin operation.", "docs/obsidian-vault/wiki/project/user-and-admin-experience.md", "project/user-admin"),
+    page("Backend and API Platform", "Spring/MyBatis 4계층, API family와 provider boundary.", "docs/obsidian-vault/wiki/project/backend-and-api-platform.md", "engineering/backend-api"),
+    page("Frontend and Demo Platform", "React feature/admin, mock registry와 PWA surface.", "docs/obsidian-vault/wiki/project/frontend-and-demo-platform.md", "engineering/frontend-demo"),
+    page("Data Model and Lifecycle", "Profile version, Application Case, analysis run과 policy history.", "docs/obsidian-vault/wiki/project/data-model-and-lifecycle.md", "engineering/data-lifecycle"),
+    page("AI Orchestration and Evidence", "Auto Prep planner, provider fallback와 evidence gate.", "docs/obsidian-vault/wiki/project/ai-orchestration-and-evidence.md", "ai-ml/orchestration-evidence"),
+    page("Model Training Portfolio", "A~F 자체 모델, evaluation과 artifact boundary.", "docs/obsidian-vault/wiki/project/model-training-portfolio.md", "ai-ml/model-portfolio"),
+    page("Mobile Desktop and Distribution", "PWA, Android, iOS와 Qt desktop package.", "docs/obsidian-vault/wiki/project/mobile-desktop-and-distribution.md", "delivery/mobile-desktop"),
+    page("Release CI and Public Demo", "Pages/APK/iOS/desktop channel과 release gate.", "docs/obsidian-vault/wiki/project/release-ci-and-public-demo.md", "delivery/release-demo"),
+    page("Repository and Knowledge Boundaries", "Main, submodule와 public Demo의 저장 책임.", "docs/obsidian-vault/wiki/project/repository-and-knowledge-boundaries.md", "governance/repository-boundaries"),
+    page("Team Ownership and Governance", "A~F vertical ownership와 common owner boundary.", "docs/obsidian-vault/wiki/project/team-ownership-and-governance.md", "governance/team-ownership"),
+    page("Portfolio Evidence Map", "Graphify extraction과 110-node evidence navigation.", "docs/obsidian-vault/wiki/project/portfolio-evidence-map.md", "evidence/portfolio-map"),
     page("CareerTuner Second Brain", "Obsidian, Graphify, LLM Wiki, public demo를 연결하는 전체 구조.", "docs/obsidian-vault/wiki/systems/careertuner-second-brain.md", "systems/careertuner-second-brain"),
     page("Agent Memory Protocol", "Codex/Claude Code류 agent가 graph/wiki/source를 읽는 우선순위.", "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md", "systems/agent-memory-protocol"),
     page("LLM Wiki Architecture", "Query-time retrieval 위에 raw/wiki/schema의 persistent synthesis를 두는 구조.", "docs/obsidian-vault/wiki/systems/llm-wiki-architecture.md", "systems/llm-wiki-architecture"),

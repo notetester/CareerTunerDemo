@@ -44,6 +44,7 @@ function getSearchText(page) {
     page.summary,
     groupById.get(page.group)?.label,
     ...(page.tags || []),
+    ...(page.sourcePaths || []),
     JSON.stringify(page.sections),
   ].join(" ").toLowerCase();
 }
@@ -54,10 +55,12 @@ function matchesSearch(page) {
 
 function renderNavigation() {
   wikiNav.textContent = "";
-  const visiblePages = pages.filter(matchesSearch);
-  visiblePageCount.textContent = String(visiblePages.length);
+  const queryActive = Boolean(state.query.trim());
+  const matchingPages = pages.filter(matchesSearch);
+  const visiblePages = matchingPages.filter((page) => queryActive || !page.navHidden);
+  visiblePageCount.textContent = String(matchingPages.length);
 
-  if (!visiblePages.length) {
+  if (!matchingPages.length) {
     const empty = document.createElement("p");
     empty.className = "nav-empty";
     empty.textContent = "검색 조건과 일치하는 공개 문서가 없습니다.";
@@ -96,6 +99,7 @@ function renderNavigation() {
 function renderArticle(page) {
   const group = groupById.get(page.group);
   const sources = page.sources || [];
+  const sourcePaths = page.sourcePaths || [];
   breadcrumb.textContent = `Wiki / ${group.label} / ${page.title}`;
   document.title = `${page.title} | CareerTuner Public Wiki`;
 
@@ -107,6 +111,7 @@ function renderArticle(page) {
       <div class="article-meta">
         <time datetime="${escapeAttribute(page.updated)}">Updated ${escapeHtml(page.updated)}</time>
         ${sources.length > 0 ? `<span class="source-count">${sources.length} public source${sources.length === 1 ? "" : "s"}</span>` : ""}
+        ${sourcePaths.length > 0 ? `<span class="source-count">${sourcePaths.length} evidence path${sourcePaths.length === 1 ? "" : "s"}</span>` : ""}
         ${(page.tags || []).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
       </div>
       ${sources.length > 0 ? `
@@ -115,6 +120,13 @@ function renderArticle(page) {
           ${sources.map((source) => `<a href="${escapeAttribute(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.label)}</a>`).join("")}
         </div>
       ` : ""}
+      ${sourcePaths.length > 0 ? `
+        <div class="article-paths" aria-label="Implementation evidence paths">
+          <span>Evidence paths</span>
+          <div>${sourcePaths.map((path) => `<code>${escapeHtml(path)}</code>`).join("")}</div>
+        </div>
+      ` : ""}
+      ${page.graphNodeId ? `<a class="graph-return" href="../SecondBrain/">Second Brain graph에서 보기</a>` : ""}
     </header>
     ${page.sections.map((section) => `
       <section id="section-${escapeAttribute(section.id)}" class="article-section">
