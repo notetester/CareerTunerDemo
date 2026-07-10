@@ -1,1 +1,0 @@
-import{Lt as e}from"./collaboration-D7daE18v.js";import{b as t,x as n,y as r}from"./ui-vendor-CxKfvK1G.js";var i=e();function a({...e}){return(0,i.jsx)(n,{"data-slot":`collapsible`,...e})}function o({...e}){return(0,i.jsx)(t,{"data-slot":`collapsible-trigger`,...e})}function s({...e}){return(0,i.jsx)(r,{"data-slot":`collapsible-content`,...e})}export{s as n,o as r,a as t};
