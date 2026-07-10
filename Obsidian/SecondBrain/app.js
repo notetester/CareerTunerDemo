@@ -33,6 +33,7 @@ const detailPoints = document.getElementById("detailPoints");
 const detailPath = document.getElementById("detailPath");
 const neighborList = document.getElementById("neighborList");
 const resultCount = document.getElementById("resultCount");
+const selectionStatus = document.getElementById("selectionStatus");
 const highlightGrid = document.getElementById("highlightGrid");
 const runTable = document.getElementById("runTable");
 const wikiGrid = document.getElementById("wikiGrid");
@@ -141,6 +142,7 @@ function edgeTouchesVisible(item) {
 
 function selectNode(item) {
   state.selected = item;
+  selectionStatus.textContent = `Selected: ${item.label}`;
   detailGroup.textContent = `${groups[item.group].label} · ${item.type}`;
   detailTitle.textContent = item.label;
   detailSummary.textContent = item.summary;
@@ -303,7 +305,12 @@ function renderGraph() {
     group.setAttribute("tabindex", "0");
     group.setAttribute("role", "button");
     group.setAttribute("aria-label", item.label);
-    group.addEventListener("click", () => selectNode(item));
+    group.setAttribute("aria-pressed", String(item.id === state.selected.id));
+    group.addEventListener("pointerdown", (event) => event.stopPropagation());
+    group.addEventListener("click", (event) => {
+      event.stopPropagation();
+      selectNode(item);
+    });
     group.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -455,7 +462,7 @@ searchInput.addEventListener("input", (event) => {
 });
 
 graph.addEventListener("pointerdown", (event) => {
-  if (event.button !== 0) return;
+  if (event.button !== 0 || event.target.closest?.(".node")) return;
   graphPan.dragging = true;
   graphPan.pointerId = event.pointerId;
   graphPan.dragStart = {

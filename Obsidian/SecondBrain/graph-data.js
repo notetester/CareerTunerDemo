@@ -163,8 +163,8 @@ window.SECOND_BRAIN_GRAPH = (() => {
     source("Karpathy LLM Wiki", "raw/wiki/schema, ingest/query/lint, index/log 패턴을 CareerTuner vault에 적용했습니다.", "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f"),
     source("Graphify", "code-only AST 추출로 실제 CareerTuner graph 수치를 생성하고, 공개용으로 압축했습니다.", "https://github.com/safishamsi/graphify"),
     source("Graphify PyPI", "공식 패키지 graphifyy와 CLI graphify 설치 경로를 runbook에 반영했습니다.", "https://pypi.org/project/graphifyy/"),
-    source("CareerTuner ARCHITECTURE", "지원 건 중심 도메인, Spring/MyBatis, React/Admin, AI 경계를 정본으로 사용했습니다.", "docs/ARCHITECTURE.md"),
-    source("CareerTuner Obsidian Wiki", "wiki/index, GRAPH_REPORT, log를 공개 demo의 설명 계층으로 연결했습니다.", "docs/obsidian-vault/wiki/index.md"),
+    source("CareerTuner 공개 Architecture Projection", "지원 건 중심 도메인, Spring/MyBatis, React/Admin, AI 경계를 공개 graph data로 투영했습니다.", "https://github.com/notetester/CareerTunerDemo/blob/main/Obsidian/SecondBrain/graph-data.js"),
+    source("CareerTuner 공개 Obsidian Wiki", "비공개 원본에서 선별한 wiki/index, GRAPH_REPORT, log의 공개 설명 계층입니다.", "https://github.com/notetester/CareerTunerDemo/tree/main/Obsidian/SecondBrain"),
   ];
 
   return {

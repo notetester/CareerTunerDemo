@@ -605,6 +605,7 @@ const detailTitle = document.getElementById("detailTitle");
 const detailBody = document.getElementById("detailBody");
 const detailPoints = document.getElementById("detailPoints");
 const resultCount = document.getElementById("resultCount");
+const selectionStatus = document.getElementById("selectionStatus");
 const neighborList = document.getElementById("neighborList");
 const zoomOutButton = document.getElementById("zoomOutButton");
 const zoomInButton = document.getElementById("zoomInButton");
@@ -702,6 +703,7 @@ function edgeTouchesSelection(edge) {
 
 function selectNode(item) {
   state.selected = item;
+  selectionStatus.textContent = `선택: ${item.title}`;
   detailArea.textContent = `${areas[item.area].label} · ${item.kind}`;
   detailTitle.textContent = item.title;
   detailBody.textContent = item.summary;
@@ -858,7 +860,12 @@ function renderGraph() {
     group.setAttribute("tabindex", "0");
     group.setAttribute("role", "button");
     group.setAttribute("aria-label", item.title);
-    group.addEventListener("click", () => selectNode(item));
+    group.setAttribute("aria-pressed", String(item.id === state.selected.id));
+    group.addEventListener("pointerdown", (event) => event.stopPropagation());
+    group.addEventListener("click", (event) => {
+      event.stopPropagation();
+      selectNode(item);
+    });
     group.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -968,7 +975,7 @@ searchInput.addEventListener("input", (event) => {
 });
 
 graph.addEventListener("pointerdown", (event) => {
-  if (event.button !== 0) return;
+  if (event.button !== 0 || event.target.closest?.(".node")) return;
   graphPan.dragging = true;
   graphPan.pointerId = event.pointerId;
   graphPan.dragStart = {
