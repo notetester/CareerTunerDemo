@@ -140,12 +140,12 @@ window.SECOND_BRAIN_GRAPH = (() => {
   ];
 
   const wikiPages = [
-    page("CareerTuner Second Brain", "Obsidian, Graphify, LLM Wiki, public demo를 연결하는 전체 구조.", "docs/obsidian-vault/wiki/systems/careertuner-second-brain.md"),
-    page("Agent Memory Protocol", "Codex/Claude Code류 agent가 graph/wiki/source를 읽는 우선순위.", "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md"),
-    page("LLM Wiki", "raw/wiki/schema, ingest/query/lint, index/log 패턴.", "docs/obsidian-vault/wiki/concepts/llm-wiki.md"),
-    page("Graphify", "code/docs를 graph로 추출하고 query 가능한 memory로 쓰는 도구.", "docs/obsidian-vault/wiki/concepts/graphify.md"),
-    page("Ingest Query Lint", "자료 수집, 질문 처리, 주기적 건강검진 workflow.", "docs/obsidian-vault/wiki/operations/ingest-query-lint.md"),
-    page("Graphify Runbook", "설치, 실행, 산출물 관리, 민감값 검사 절차.", "docs/obsidian-vault/wiki/operations/graphify-runbook.md"),
+    page("CareerTuner Second Brain", "Obsidian, Graphify, LLM Wiki, public demo를 연결하는 전체 구조.", "docs/obsidian-vault/wiki/systems/careertuner-second-brain.md", "systems/careertuner-second-brain"),
+    page("Agent Memory Protocol", "Codex/Claude Code류 agent가 graph/wiki/source를 읽는 우선순위.", "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md", "systems/agent-memory-protocol"),
+    page("LLM Wiki", "raw/wiki/schema, ingest/query/lint, index/log 패턴.", "docs/obsidian-vault/wiki/concepts/llm-wiki.md", "concepts/llm-wiki"),
+    page("Graphify", "code/docs를 graph로 추출하고 query 가능한 memory로 쓰는 도구.", "docs/obsidian-vault/wiki/concepts/graphify.md", "concepts/graphify"),
+    page("Ingest Query Lint", "자료 수집, 질문 처리, 주기적 건강검진 workflow.", "docs/obsidian-vault/wiki/operations/ingest-query-lint.md", "operations/ingest-query-lint"),
+    page("Graphify Runbook", "설치, 실행, 산출물 관리, 민감값 검사 절차.", "docs/obsidian-vault/wiki/operations/graphify-runbook.md", "operations/graphify-runbook"),
   ];
 
   const codeCards = [
@@ -195,8 +195,8 @@ window.SECOND_BRAIN_GRAPH = (() => {
     return { scope, label, files, nodes, edges, note };
   }
 
-  function page(title, summary, path) {
-    return { title, summary, path };
+  function page(title, summary, path, wikiId) {
+    return { title, summary, path, wikiId };
   }
 
   function code(title, summary, path, tags) {

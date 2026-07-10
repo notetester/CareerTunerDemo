@@ -591,6 +591,22 @@ input[type="search"] {
   font-weight: 800;
 }
 
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin-top: 12px;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.card-link:hover,
+.card-link:focus-visible {
+  text-decoration: underline;
+}
+
 .source-card a {
   display: inline-flex;
   margin-top: 10px;

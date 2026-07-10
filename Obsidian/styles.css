@@ -346,18 +346,19 @@ input[type="search"] {
   color: var(--muted);
   font-size: 13px;
 }
-}
 
 .edge {
-  stroke: #546273;
-  stroke-width: 1.05;
-  opacity: 0.55;
+  stroke: #66788e;
+  stroke-width: 1.2;
+  opacity: 0.72;
+  vector-effect: non-scaling-stroke;
   transition: opacity 140ms ease, stroke 140ms ease, stroke-width 140ms ease;
 }
 
 .edge.strong {
-  stroke-width: 1.9;
-  opacity: 0.78;
+  stroke: #7b8fa7;
+  stroke-width: 1.8;
+  opacity: 0.86;
 }
 
 .edge.selected {
@@ -398,7 +399,7 @@ input[type="search"] {
 }
 
 .edge.dimmed {
-  opacity: 0.24;
+  opacity: 0.32;
 }
 
 .node.related circle {
