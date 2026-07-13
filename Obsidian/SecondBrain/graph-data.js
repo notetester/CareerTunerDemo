@@ -15,8 +15,8 @@ window.SECOND_BRAIN_GRAPH = (() => {
   };
 
   const nodes = [
-    n("career-tuner", "CareerTuner", "hub", "portfolio-root", 36, "채용공고, 지원자 스펙, AI 분석, 면접, 첨삭, 릴리즈 산출물을 하나의 지원 건 중심으로 묶은 AI 취업 전략 플랫폼입니다.", ["지원 건이 제품·DB·AI 파이프라인의 중심 단위입니다.", "백엔드, 프런트, 관리자, ML 실험, 데모 배포가 같은 repo와 submodule graph 안에서 연결됩니다.", "이 공개 화면은 API 키와 계정값을 제외하고 내부 코드 구조를 포트폴리오 증거로 드러냅니다."], "README.md", ["application-case", "spring-api", "react-spa", "ai-orchestrator", "graphify-extract", "obsidian-wiki", "web-demo"]),
-    n("portfolio-graph", "Portfolio Knowledge Graph", "hub", "public-view", 30, "CareerTunerDemo에 공개하는 포트폴리오용 wiki/Graphify 시각화입니다.", ["단순 개념도가 아니라 실제 문서·코드 경로·Graphify 추출 수치를 함께 보여줍니다.", "검색, 그룹 필터, 상세 패널, wiki/code 카드로 리뷰어가 구조를 따라갈 수 있습니다.", "민감값은 제외하지만 기술 구조와 구현 범위는 적극적으로 공개합니다."], "CareerTunerDemo/Obsidian/SecondBrain", ["career-tuner", "graphify-extract", "wiki-index", "architecture-doc", "code-map"]),
+    n("career-tuner", "CareerTuner", "hub", "portfolio-root", 36, "채용공고, 지원자 스펙, AI 분석, 면접, 첨삭, 릴리즈 산출물을 하나의 지원 건 중심으로 묶은 AI 취업 전략 플랫폼입니다.", ["지원 건이 제품·DB·AI 파이프라인의 중심 단위입니다.", "백엔드, 프런트, 관리자, ML 실험, 데이터 수명주기와 다중 플랫폼 배포가 같은 graph 안에서 연결됩니다.", "공개 projection은 credential과 개인 데이터를 제외하고 source 기준·실행 증거·미완료 gate를 분리합니다."], "README.md", ["application-case", "spring-api", "react-spa", "ai-orchestrator", "graphify-extract", "obsidian-wiki", "web-demo", "demo-readiness-ledger"]),
+    n("portfolio-graph", "Portfolio Knowledge Graph", "hub", "public-view", 30, "CareerTunerDemo에 공개하는 포트폴리오용 wiki/Graphify 시각화입니다.", ["단순 개념도가 아니라 실제 문서·코드 경로·Graphify 추출 수치를 함께 보여줍니다.", "검색, 그룹 필터, 상세 패널, wiki/code 카드로 리뷰어가 구조를 따라갈 수 있습니다.", "민감값은 제외하지만 기술 구조와 구현 범위는 적극적으로 공개합니다."], "Obsidian/SecondBrain", ["career-tuner", "graphify-extract", "wiki-index", "architecture-doc", "code-map"]),
     n("code-map", "Code Map", "hub", "curated-graph", 26, "Graphify code-only AST 결과를 사람이 읽기 좋은 포트폴리오 graph로 압축한 지도입니다.", ["원본 graph.json은 75MB 규모라 public demo에는 요약 graph만 싣습니다.", "절대경로와 환경값을 제거하고 repo-relative 경로와 집계 수치를 사용합니다.", "실제 추출 수치와 curated node를 같이 노출해 과장 없이 강점을 보여줍니다."], "Obsidian/SecondBrain/graph-data.js", ["graphify-extract", "backend-graph", "frontend-graph", "ml-graph"]),
 
     n("application-case", "지원 건", "product", "core-domain", 28, "CareerTuner의 핵심 업무 단위입니다. 한 기업·직무·공고 조합에 공고 분석, 기업 분석, 적합도, 면접, 첨삭 기록이 모입니다.", ["공고 여러 개를 묶는 단위가 아니라 같은 공고 revision과 분석 이력을 관리합니다.", "archived_at/deleted_at으로 보관과 삭제를 분리합니다.", "사용자 화면과 관리자 운영 화면의 기준이 됩니다."], "docs/ARCHITECTURE.md", ["applicationcase-api", "job-posting", "analysis-run", "soft-delete", "dashboard"]),
@@ -34,9 +34,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
 
     n("spring-api", "Spring API", "backend", "stack", 28, "Spring Boot 4.1, Java 21, MyBatis, MySQL 8 기반 REST API 서버입니다.", ["모든 컨트롤러는 /api/** 하위입니다.", "응답은 ApiResponse envelope를 사용합니다.", "Graphify backend 추출: 1,787 code files, 13,548 nodes, 47,689 edges."], "backend/README.md", ["api-response", "mybatis", "security-config", "auth-api", "applicationcase-api", "fitanalysis-api"]),
     n("api-response", "ApiResponse envelope", "backend", "contract", 16, "모든 REST 응답을 success/code/message/data 형식으로 감싸는 공통 계약입니다.", ["프런트와 관리자 화면이 같은 오류·성공 처리 구조를 공유합니다."], "backend/src/main/java/com/careertuner/common/web/ApiResponse.java", ["spring-api", "react-spa"]),
-    n("security-config", "SecurityConfig", "backend", "security", 18, "JWT/stateless 인증, 공개 엔드포인트, CORS, SSE 디스패치 허용 같은 공통 보안 경계를 담당합니다.", ["공통 영역이라 변경 시 영향 범위를 크게 봅니다.", "민감값은 환경변수로 주입하고 공개 데모에는 값 자체를 싣지 않습니다."], "backend/src/main/java/com/careertuner/common/config/SecurityConfig.java", ["auth-api", "spring-api"]),
+    n("security-config", "SecurityConfig", "backend", "security", 18, "JWT/stateless 인증, 공개 엔드포인트, CORS, SSE와 관리자 권한 interceptor 경계를 담당합니다.", ["일반 ADMIN의 선언되지 않은 관리자 API는 backend에서 fail-closed합니다.", "민감값은 환경변수로 주입하고 공개 데모에는 값 자체를 싣지 않습니다."], "backend/src/main/java/com/careertuner/common/config/SecurityConfig.java", ["auth-api", "spring-api", "admin-permission-boundary"]),
     n("mybatis", "MyBatis Mapper", "backend", "persistence", 22, "CareerTuner의 영속성 접근 방식입니다. JPA 없이 @Mapper 인터페이스와 XML mapper를 사용합니다.", ["SQL 흐름이 명시적이라 팀 분담과 리뷰에 유리합니다.", "도메인별 mapper XML과 Java mapper가 대응됩니다."], "backend/src/main/resources/mapper", ["schema", "fit-analysis-table", "application-case-table"]),
-    n("auth-api", "Auth API", "backend", "api", 18, "회원가입, 로그인, refresh 회전, logout, me, 이메일 인증, OAuth callback을 담당합니다.", ["JWT access와 opaque refresh token을 분리합니다.", "seed 계정은 개발/데모 검증용으로 문서화돼 있습니다."], "backend/src/main/java/com/careertuner/auth/service/AuthServiceImpl.java", ["security-config", "users"]),
+    n("auth-api", "Auth API", "backend", "api", 18, "회원가입, 로그인, refresh 회전, logout, me, 이메일·소셜·전화 인증을 담당합니다.", ["JWT access와 opaque refresh token을 분리합니다.", "Firebase ID token 검증과 native PKCE handoff는 browser callback과 별도 trust boundary로 관리합니다."], "backend/src/main/java/com/careertuner/auth/service/AuthServiceImpl.java", ["security-config", "users", "firebase-phone-trust", "native-auth-handoff"]),
     n("applicationcase-api", "Application Case API", "backend", "api", 24, "지원 건 생성, 목록, 상세, 수정, soft delete, 공고문 저장과 추출 상태를 다룹니다.", ["CareerTuner 핵심 작업공간 API입니다.", "공고문 추출 worker, B 분석, 관리자 상세와 연결됩니다."], "backend/src/main/java/com/careertuner/applicationcase/service/ApplicationCaseServiceImpl.java", ["application-case", "job-posting", "jobanalysis-api", "admin-application"]),
     n("jobanalysis-api", "Job/Company Analysis API", "backend", "api", 20, "공고 분석과 기업 분석 생성·조회·이력·검수 확정을 담당합니다.", ["자체 규칙, 로컬 LLM, 웹 근거, fallback 경로가 연결됩니다."], "backend/src/main/java/com/careertuner/applicationcase/service/BAnalysisGenerationService.java", ["company-analysis", "web-search", "ai-usage-log"]),
     n("fitanalysis-api", "Fit Analysis API", "backend", "api", 23, "지원 건별 적합도 분석 생성, 조회, 이력, 학습 과제 토글을 담당합니다.", ["C 영역의 가장 중요한 사용자 API입니다.", "관리자 분석 검토 API와 같은 데이터 모델을 공유합니다."], "backend/src/main/java/com/careertuner/fitanalysis/controller/FitAnalysisController.java", ["fit-analysis", "evidence-gate", "admin-fit-analysis"]),
@@ -45,24 +45,24 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("support-api", "Support API", "backend", "api", 17, "공지, FAQ, 문의, 챗봇 FAQ, 미답변 질문 mapper와 controller를 포함합니다.", ["사용자 지원과 관리자 운영의 연결 지점입니다."], "backend/src/main/resources/mapper/support", ["support", "support-ui", "admin-support"]),
     n("jackson-convention", "Jackson 3 Convention", "backend", "guardrail", 16, "Spring Boot 4 환경에서 Jackson 3 ObjectMapper 사용 규칙을 테스트로 고정합니다.", ["직접 new ObjectMapper와 Jackson 2 import를 차단합니다."], "backend/src/test/java/com/careertuner/JacksonUsageConventionTests.java", ["spring-api"]),
 
-    n("react-spa", "React SPA", "frontend", "stack", 27, "React 18, Vite 6, TypeScript, Tailwind v4 기반 사용자/관리자 반응형 SPA입니다.", ["Graphify frontend/src 추출: 571 code files, 4,448 nodes, 13,356 edges.", "사용자와 관리자 화면을 한 앱에서 관리합니다.", "mock demo, PWA, Capacitor 패키징이 같은 dist를 공유합니다."], "frontend/README.md", ["routes", "mock-registry", "admin-ui", "pwa-capacitor"]),
+    n("react-spa", "React SPA", "frontend", "stack", 27, "React 19.2.7, Vite 8.1.4, TypeScript 7.0.2, Tailwind v4 기반 사용자/관리자 반응형 SPA입니다.", ["Graphify frontend/src 추출: 571 code files, 4,448 nodes, 13,356 edges.", "사용자와 관리자 화면을 한 앱에서 관리합니다.", "mock demo, PWA, Capacitor 패키징이 같은 dist를 공유합니다."], "frontend/package.json", ["routes", "mock-registry", "admin-ui", "pwa-capacitor"]),
     n("routes", "Routes", "frontend", "routing", 18, "사용자 라우트와 관리자 라우트를 연결하는 SPA 진입 구조입니다.", ["라우팅은 공통 영향이 큰 영역입니다.", "공개 demo와 404 fallback에서도 중요합니다."], "frontend/src/app/routes.ts", ["react-spa", "admin-ui"]),
     n("app-layout", "App Layout", "frontend", "ui", 16, "Header, Footer, Root, 공통 UI primitive를 통해 제품 경험을 구성합니다.", ["Figma Make 초안을 점진적으로 기능 모듈 구조로 옮깁니다."], "frontend/src/app/components", ["react-spa", "responsive"]),
-    n("mock-registry", "Mock Registry", "frontend", "demo", 22, "백엔드 없이 데모와 APK를 자체완결로 실행하게 하는 mock API registry입니다.", ["로그인은 아무 값이나 통과하고 데모 데이터가 채워집니다.", "웹 데모와 Android APK의 핵심 포트폴리오 장치입니다."], "frontend/src/app/lib/mock", ["web-demo", "android-apk", "dashboard-ui", "admin-ui"]),
+    n("mock-registry", "Mock Registry", "frontend", "demo", 22, "정적 체험용 mock과 장애 시 read-only fallback 데이터를 제공하는 API registry입니다.", ["정적 mock build와 AWS-first outage fallback은 서로 다른 mode입니다.", "일반 Sites build는 실제 API를 먼저 사용하고 readiness가 확인된 장애에서만 mock으로 전환합니다."], "frontend/src/app/lib/mock", ["web-demo", "android-apk", "dashboard-ui", "admin-ui", "outage-demo-fallback"]),
     n("dashboard-ui", "Dashboard UI", "frontend", "screen", 17, "지원 현황, 최근 분석, 할 일, 크레딧을 보여주는 사용자 요약 화면입니다.", ["mock demo에서 제품 첫 인상을 담당합니다."], "frontend/src/app/pages/Dashboard.tsx", ["dashboard", "mock-registry"]),
     n("fit-analysis-ui", "Fit Analysis UI", "frontend", "screen", 20, "적합도 분석 결과, 비교 매트릭스, 액션 보드, 톤별 전략을 보여주는 사용자 화면입니다.", ["C 영역 백엔드와 포트폴리오 핵심 흐름입니다."], "frontend/src/features/applications/types/analysis.ts", ["fit-analysis", "fitanalysis-api"]),
     n("interview-ui", "Interview UI", "frontend", "screen", 16, "AI 면접 시작, 진행, 결과 확인 사용자 흐름을 담당합니다.", ["향후 음성/비언어 분석 확장과 연결됩니다."], "frontend/src/app/pages", ["interview-prep", "interview-finetune"]),
     n("correction-ui", "Correction UI", "frontend", "screen", 16, "첨삭 기능을 지원 건 상세와 독립 첨삭 흐름에 연결합니다.", ["E correction LLM 결과를 사용자 경험으로 보여줍니다."], "frontend/src/app/pages", ["correction", "correction-api"]),
     n("support-ui", "Support UI", "frontend", "feature", 17, "고객센터, FAQ, 공지, 문의, 챗봇 페이지를 사용자 기능으로 제공합니다.", ["운영형 서비스의 완성도를 보여주는 기능군입니다."], "frontend/src/features/support/pages/SupportHomePage.tsx", ["support", "support-api"]),
-    n("admin-ui", "Admin UI", "admin", "surface", 24, "같은 React 앱 안에서 /admin/** 라우트로 운영자 화면을 제공합니다.", ["사용자 기능 완료 기준에 관리자 화면/API를 포함합니다.", "목록, 검색, 상세, 메모, 상태 변경 등 운영 패턴을 반복합니다."], "frontend/src/admin/routes.ts", ["admin-application", "admin-fit-analysis", "admin-analytics", "admin-correction", "admin-refunds", "admin-support"]),
+    n("admin-ui", "Admin UI", "admin", "surface", 24, "같은 React 앱 안에서 /admin/** 라우트로 운영자 화면을 제공합니다.", ["29개 세부 권한에 따라 route, navigation과 mutation action을 숨기거나 차단합니다.", "익명·일반 회원과 권한 조회 실패는 fail-closed이고, 허용 전 route module을 lazy import하지 않습니다.", "AI 상담 운영 화면은 FAQ 임계값 초과 여부와 실제 상담 라우팅 사유를 구분해 표시합니다."], "frontend/src/admin/routes.ts", ["admin-application", "admin-fit-analysis", "admin-analytics", "admin-correction", "admin-refunds", "admin-support", "admin-permission-boundary"]),
     n("admin-application", "Admin Application Cases", "admin", "feature", 17, "지원 건 운영 목록·상세·상태 변경·B 분석 이력을 확인합니다.", ["사용자 지원 건 API의 운영 짝입니다."], "frontend/src/admin", ["applicationcase-api", "jobanalysis-api"]),
     n("admin-fit-analysis", "Admin Fit Analysis", "admin", "feature", 19, "적합도 분석 목록, 상세, 스냅샷, 품질 플래그, 운영 메모를 다룹니다.", ["C 영역 분석 품질을 운영자가 검토할 수 있습니다."], "backend/src/main/java/com/careertuner/admin", ["fit-analysis", "fitanalysis-api", "admin-analytics"]),
     n("admin-analytics", "Admin Analytics", "admin", "feature", 18, "장기 분석 실행 이력, 품질 큐, 사용자별 타임라인, 운영 메모를 다룹니다.", ["분석 결과를 운영 가능한 제품으로 만드는 영역입니다."], "backend/src/main/resources/mapper/analysis", ["career-analysis", "ai-usage-log"]),
     n("admin-correction", "Admin Correction", "admin", "feature", 16, "첨삭 성공 이력과 실패 로그를 운영자가 확인합니다.", ["E 영역 운영 가시성을 제공합니다."], "backend/src/main/resources/mapper/correction/CorrectionMapper.xml", ["correction", "correction-api"]),
     n("admin-refunds", "Admin Refunds", "admin", "feature", 16, "환불 요청의 자동 판정 근거와 승인/거절 흐름을 제공합니다.", ["구독제와 AI 사용권이 실제 운영 정책으로 연결됩니다."], "backend/src/main/java/com/careertuner/billing", ["billing", "billing-api"]),
     n("admin-support", "Admin Support", "admin", "feature", 16, "공지, FAQ, 문의, 챗봇 미답변 질문을 운영자가 관리합니다.", ["고객지원 도메인의 운영 표면입니다."], "backend/src/main/resources/mapper/support", ["support", "support-api"]),
-    n("pwa-capacitor", "PWA + Capacitor", "frontend", "mobile", 19, "반응형 웹에서 PWA, Android/iOS 패키징으로 확장하는 모바일 전략입니다.", ["같은 React dist를 웹과 앱 산출물이 공유합니다.", "푸시, 딥링크, 네이티브 설정 화면이 준비돼 있습니다."], "frontend/MOBILE_BUILD.md", ["android-apk", "ios-build", "mobile-native"]),
-    n("mobile-native", "Native Bridge", "frontend", "mobile", 16, "Capacitor 기반 카메라, 푸시, 딥링크, 앱잠금, haptics 같은 플랫폼 기능을 캡슐화합니다.", ["웹과 앱의 경계를 platform 모듈로 분리합니다."], "frontend/src/platform", ["pwa-capacitor"]),
+    n("pwa-capacitor", "PWA + Capacitor", "frontend", "mobile", 19, "반응형 웹에서 PWA, Android/iOS 패키징으로 확장하는 모바일 전략입니다.", ["같은 React dist를 웹과 앱 산출물이 공유합니다.", "PKCE, 검증된 App/Universal Link, 플랫폼별 알림 destination을 native 경계로 둡니다."], "frontend/MOBILE_BUILD.md", ["android-apk", "ios-build", "mobile-native", "native-auth-handoff", "cross-platform-integration"]),
+    n("mobile-native", "Native Bridge", "frontend", "mobile", 16, "Capacitor 기반 카메라, 푸시, 딥링크, 앱잠금, haptics 같은 플랫폼 기능을 캡슐화합니다.", ["웹과 앱의 경계를 platform 모듈로 분리합니다.", "Native OAuth callback은 exact host/path와 one-time handoff code를 검증합니다."], "frontend/src/platform", ["pwa-capacitor", "native-auth-handoff"]),
     n("responsive", "Responsive UX", "frontend", "ux", 16, "3열 작업공간을 모바일에서 1열, drawer, 접이식 카드로 접는 UX 원칙입니다.", ["포트폴리오에서 모바일 대응성을 설명하는 근거입니다."], "docs/planning/모바일 고려.md", ["react-spa", "pwa-capacitor"]),
 
     n("ai-orchestrator", "AI Orchestrator", "ai", "pipeline", 26, "사용자 요청을 인테이크 대화, planner, 병렬 도메인 호출, SSE 진행 상황으로 자동 준비하는 AI 파이프라인입니다.", ["프로필, 공고, 적합도, 자소서, 면접, 커뮤니티 영역을 동적으로 실행합니다.", "fallback과 skip으로 일부 미완이어도 완주하는 구조입니다."], "docs/AI_ORCHESTRATOR.md", ["autoprep", "provider-dispatcher", "prompt-templates", "ai-usage-log"]),
@@ -75,17 +75,17 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("prompt-templates", "Prompt Templates", "ai", "prompt", 17, "도메인별 system prompt와 strictness prompt를 resources에 분리합니다.", ["프롬프트도 코드처럼 버전 관리되는 포트폴리오 자산입니다."], "backend/src/main/resources/prompts", ["ai-orchestrator", "correction"]),
     n("ai-usage-log", "AI Usage Log", "ai", "ops", 17, "AI 호출 성공/실패, 비용, fallback 상태를 운영 관점에서 추적합니다.", ["관리자 화면과 크레딧 차감 정책의 기반입니다."], "backend/src/main/resources/mapper/ai", ["billing", "admin-analytics"]),
 
-    n("career-strategy-llm", "Career Strategy LLM", "ml", "model-area", 24, "C 영역 자체 LLM/평가 실험입니다. 지원 전략과 적합도 분석 품질 개선의 핵심 근거입니다.", ["RAG hardcase, semantic judge, evidence gate, 4090 평가 보고서가 축적돼 있습니다.", "포트폴리오 보고서와 model card 성격의 문서가 연결됩니다."], "ml/career-strategy-llm/README.md", ["fit-analysis", "strategy", "evaluation-reports"]),
-    n("correction-llm", "Correction LLM", "ml", "model-area", 20, "E 영역 첨삭 모델 산출물입니다. 자기소개서/답변 문장 개선 기능과 연결됩니다.", ["README, model-card, evaluation summary가 있습니다."], "ml/correction-llm/README.md", ["correction", "admin-correction"]),
-    n("interview-finetune", "Interview Fine-tune", "ml", "model-area", 18, "면접 질문/답변 평가용 fine-tune 실험 영역입니다.", ["dataset assembly, LoRA, judge rubric, live AB 결과가 연결됩니다."], "ml/interview-finetune/README.md", ["interview-prep"]),
+    n("career-strategy-llm", "Career Strategy LLM", "ml", "model-area", 24, "C 영역 Qwen2.5-3B QLoRA/평가 실험입니다. 지원 전략과 적합도 분석 품질 개선의 핵심 근거입니다.", ["Rank 8/16/32와 runtime parameter·F16/Q4 trade-off를 같은 contract gate로 비교합니다.", "현재 단순 RAG는 비활성이고 evidence gate와 semantic judge를 별도 검증합니다."], "ml/career-strategy-llm/README.md", ["fit-analysis", "strategy", "evaluation-reports", "model-evidence"]),
+    n("correction-llm", "Correction LLM", "ml", "model-area", 20, "E 영역 Delivery-s QLoRA 첨삭 모델 산출물입니다. 자기소개서/답변 문장 개선 기능과 연결됩니다.", ["F16 gate 증거와 최신 F16/Q4 비교 실패를 분리해 기록합니다.", "완주하지 못한 비교 run에는 성능 수치를 만들지 않습니다."], "ml/correction-llm/README.md", ["correction", "admin-correction", "model-evidence"]),
+    n("interview-finetune", "Interview Fine-tune", "ml", "model-area", 18, "D 영역 Qwen2.5-3B text QLoRA와 voice/visual 모델을 분리한 면접 평가 실험입니다.", ["Golden20의 F16/Q4 MAE와 latency trade-off를 기록합니다.", "LightGBM nonverbal과 faster-whisper는 LLM과 다른 모델 계열로 관리합니다."], "ml/interview-finetune/README.md", ["interview-prep", "model-evidence"]),
     n("nonverbal", "Nonverbal Interview", "ml", "model-area", 17, "표정·시선·자세 분석을 면접 태도 개선 참고자료로 다루는 ML 영역입니다.", ["합격/불합격 판단이 아니라 피드백 보조로 제한합니다."], "ml/interview-nonverbal/README.md", ["interview-prep"]),
     n("job-posting-worker", "Job Posting Worker", "ml", "worker", 21, "PDF/이미지/문서 텍스트 추출과 공고문 처리 안정화를 담당하는 Python worker입니다.", ["Graphify ML 추출에도 많은 테스트와 scripts가 잡힙니다.", "OCR runtime smoke, Docker smoke, release readiness 검사가 있습니다."], "ml/job-posting-worker/README.md", ["job-posting", "jobanalysis-api"]),
-    n("qlora-profile", "Profile QLoRA Training", "ml", "training", 16, "프로필 AI 데이터셋과 QLoRA 학습 runbook을 docs/ai-training에 둔 실험 영역입니다.", ["데이터 품질 체크리스트와 schema가 함께 있습니다."], "docs/ai-training/README.md", ["evaluation-reports"]),
-    n("4090-ops", "4090 Ops", "ops", "infrastructure", 18, "공유 GPU, Ollama, OpenSSH, Tailscale 운영 스크립트와 상태 문서를 관리합니다.", ["AI 실험과 로컬 LLM provider를 실제 운영 환경으로 연결합니다."], "docs/ai-artifacts/STATUS_4090.md", ["ollama-provider", "evaluation-reports"]),
-    n("evaluation-reports", "AI Reports", "ml", "evidence", 20, "C career strategy와 기타 AI 실험의 반복 평가 보고서를 submodule에 축적합니다.", ["장문 보고서는 main repo가 아니라 ai-reports submodule에 둡니다.", "포트폴리오에서는 모델 개선 과정을 보여주는 강점입니다."], "docs/ai-reports/areas/c-career-strategy/reports", ["career-strategy-llm", "ai-boundaries"]),
-    n("ml-graph", "Graphify ML Extract", "ml", "graphify-scope", 18, "Graphify code-only 추출 결과: ml 204 files, 2,016 nodes, 4,830 edges.", ["calls 1,531, contains 1,048, imports 621, references 539를 확인했습니다."], "TEMP/ct-graphify-ml/graphify-out/graph.json", ["graphify-extract", "career-strategy-llm", "job-posting-worker"]),
+    n("qlora-profile", "Profile QLoRA Training", "ml", "training", 16, "A 영역 Qwen3-4B Profile LoRA v4 학습 실험입니다.", ["3,000개 학습 data와 0.8145% trainable parameter 증거를 기록합니다.", "Artifact는 저장소 밖이고 runtime 기본 OFF라 재현·운영 완료로 과장하지 않습니다."], "docs/ai-training/README.md", ["evaluation-reports", "model-evidence"]),
+    n("4090-ops", "4090 Ops", "ops", "infrastructure", 18, "공유 GPU, Ollama, OpenSSH, Tailscale 운영 스크립트와 상태 문서를 관리합니다.", ["AI 실험과 로컬 LLM provider를 실제 운영 환경으로 연결합니다."], privateEvidence("private evidence (not published): 4090 operations status"), ["ollama-provider", "evaluation-reports"]),
+    n("evaluation-reports", "AI Reports", "ml", "evidence", 20, "C career strategy와 기타 AI 실험의 반복 평가 보고서를 submodule에 축적합니다.", ["장문 보고서는 main repo가 아니라 ai-reports submodule에 둡니다.", "포트폴리오에서는 모델 개선 과정을 보여주는 강점입니다."], privateEvidence("private evidence (not published): AI evaluation reports"), ["career-strategy-llm", "ai-boundaries"]),
+    n("ml-graph", "Graphify ML Extract", "ml", "graphify-scope", 18, "Graphify code-only 추출 결과: ml 204 files, 2,016 nodes, 4,830 edges.", ["calls 1,531, contains 1,048, imports 621, references 539를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["graphify-extract", "career-strategy-llm", "job-posting-worker"]),
 
-    n("schema", "DB Schema", "data", "database", 24, "users, application_case, analysis_run, fit_analysis, payment, credit, consent 등 제품의 핵심 데이터 모델입니다.", ["지원 건 중심의 1:N 분석 이력을 허용합니다.", "JSON 컬럼은 초기에는 문자열로 매핑하고 필요 시 TypeHandler로 확장합니다."], "backend/src/main/resources/db/schema.sql", ["users", "application-case-table", "analysis-run", "fit-analysis-table", "payment-credit", "consent"]),
+    n("schema", "DB Schema", "data", "database", 24, "users, application_case, analysis_run, fit_analysis, payment, credit, consent와 플랫폼 handoff를 포함한 핵심 데이터 모델입니다.", ["지원 건 중심의 1:N 분석 이력과 immutable profile snapshot을 허용합니다.", "탈퇴·soft delete·idempotency·derived media relation을 patch와 mapper predicate로 함께 관리합니다."], "backend/src/main/resources/db/schema.sql", ["users", "application-case-table", "analysis-run", "fit-analysis-table", "payment-credit", "consent", "lifecycle-integrity"]),
     n("users", "Users/Profile", "data", "table-family", 16, "회원, 프로필, 프로필 버전을 공고 분석 비교 기준으로 사용합니다.", ["인증, 지원 건, AI 분석의 기준 엔터티입니다."], "backend/src/main/resources/mapper/user", ["auth-api", "schema"]),
     n("application-case-table", "application_case", "data", "table-family", 20, "기업·직무·공고 조합의 작업공간을 저장합니다.", ["보관과 삭제는 별도 시각 컬럼으로 관리합니다."], "docs/ARCHITECTURE.md", ["application-case", "soft-delete", "job-posting-revision"]),
     n("job-posting-revision", "job_posting revision", "data", "table-family", 17, "같은 지원 건의 공고문 수정 이력을 저장합니다.", ["분석 재현성과 사용자 검수 흐름에 필요합니다."], "docs/ARCHITECTURE.md", ["job-posting", "analysis-run"]),
@@ -93,14 +93,23 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("fit-analysis-table", "fit_analysis", "data", "table-family", 19, "적합도 분석 결과, condition match, 학습 과제, 히스토리를 저장합니다.", ["C 영역 사용자/관리자 기능의 핵심 테이블군입니다."], "backend/src/main/resources/mapper/analysis", ["fit-analysis", "admin-fit-analysis"]),
     n("payment-credit", "Payment/Credit", "data", "table-family", 17, "구독, 결제, 크레딧, 사용권, 환불 정책을 저장합니다.", ["AI 기능 비용 구조를 데이터로 관리합니다."], "backend/src/main/resources/mapper/credit", ["billing", "admin-refunds"]),
     n("consent", "Consent/Legal", "data", "table-family", 15, "약관/동의 이력을 버전별로 저장합니다.", ["AI 데이터 사용 동의와 개인정보 처리 흐름의 근거입니다."], "backend/src/main/resources/mapper/consent", ["support", "schema"]),
-    n("soft-delete", "Archive/Delete Policy", "data", "policy", 16, "지원 건 상태와 보관/삭제 시각을 분리하는 데이터 정책입니다.", ["삭제는 물리 삭제가 아니라 deleted_at 기록입니다."], "docs/ARCHITECTURE.md", ["application-case", "application-case-table"]),
+    n("soft-delete", "Archive/Delete Policy", "data", "policy", 16, "지원 건과 C/D/E/F 도메인의 보관·삭제·재활성화를 분리하는 데이터 정책입니다.", ["사용자 삭제는 개인정보를 비식별화하면서 공개 content와 audit FK graph를 보존합니다.", "Relation/reaction은 동일 row 재활성화와 active predicate로 counter를 대사합니다."], "docs/ARCHITECTURE.md", ["application-case", "application-case-table", "lifecycle-integrity"]),
 
-    n("web-demo", "GitHub Pages Web Demo", "release", "channel", 22, "dev 머지 후 mock build를 CareerTunerDemo로 배포하는 공개 웹 데모입니다.", ["백엔드 없이 포트폴리오 시연이 가능합니다.", "이번 SecondBrain 화면도 이 경로에서 제공됩니다."], "docs/RELEASE.md", ["pages-deploy", "mock-registry", "portfolio-graph"]),
-    n("android-apk", "Android APK", "release", "channel", 20, "v* 또는 demo-* 태그로 mock demo APK를 GitHub Releases에 첨부합니다.", ["BlueStacks에 드래그앤드롭으로 설치 가능한 산출물입니다."], "frontend/MOBILE_BUILD.md", ["pwa-capacitor", "github-actions"]),
-    n("ios-build", "iOS Simulator Build", "release", "channel", 16, "macOS runner에서 무서명 시뮬레이터 .app을 빌드하는 수동 workflow입니다.", ["Apple 계정 없이 빌드 검증이 가능합니다."], "frontend/MOBILE_BUILD.md", ["pwa-capacitor", "github-actions"]),
-    n("desktop-release", "Desktop Release", "release", "channel", 16, "데스크톱 zip, installer, portable 실행 파일 산출물 전략입니다.", ["웹/모바일 외 설치형 경험을 포트폴리오에 추가합니다."], "desktop/README.md", ["github-actions"]),
+    n("web-demo", "GitHub Pages Web Demo", "release", "channel", 22, "정적 mock 체험과 AWS-first 장애 fallback을 구분해 공개하는 웹 데모입니다.", ["정상 상태에서는 AWS API가 우선이며 network/502/503/504와 readiness DOWN이 함께 확인될 때만 read-only mock으로 전환합니다.", "이번 SecondBrain 화면도 같은 공개 경로에서 제공됩니다."], "docs/RELEASE.md", ["pages-deploy", "mock-registry", "portfolio-graph", "outage-demo-fallback"]),
+    n("android-apk", "Android APK", "release", "channel", 20, "동일 React build를 Capacitor Android 앱으로 패키징하는 release channel입니다.", ["PR #395 기준 emulator와 live-signed verified App Link가 PASS했습니다.", "최신 frontend candidate는 변경 UI targeted smoke를 별도 수행해야 합니다."], "frontend/MOBILE_BUILD.md", ["pwa-capacitor", "github-actions", "cross-platform-integration"]),
+    n("ios-build", "iOS Build", "release", "channel", 16, "macOS/Xcode에서 Capacitor iOS project와 Universal Link contract를 검증하는 channel입니다.", ["Unsigned source/CI build 경로는 확인됐습니다.", "Team ID와 signed device에서 두 exact Universal Link를 검증하는 live gate가 남아 있습니다."], "frontend/MOBILE_BUILD.md", ["pwa-capacitor", "github-actions", "cross-platform-integration"]),
+    n("desktop-release", "Desktop Release", "release", "channel", 16, "Qt desktop의 zip, setup, portable 실행 파일과 web handoff를 제공하는 channel입니다.", ["PR #395에서 Release/CTest/package/login/theme/8 handoff를 확인했습니다.", "Server-side prep job/device persistence는 미구현 gate로 명시합니다."], "desktop/README.md", ["github-actions", "cross-platform-integration"]),
     n("github-actions", "GitHub Actions", "release", "automation", 18, "CI, demo deploy, Android release, iOS build, Pages deployment를 자동화합니다.", ["태그/브랜치 기반 산출물 배포의 근거입니다."], ".github/workflows", ["web-demo", "android-apk", "ios-build", "pages-deploy"]),
     n("pages-deploy", "CareerTunerDemo Deploy", "release", "automation", 18, "비공개 main repo의 sanitized build artifact를 공개 Pages repo로 내보냅니다.", ["기존 Obsidian/ 경로를 보존하도록 배포 workflow가 정리돼 있습니다."], ".github/workflows/deploy-demo.yml", ["web-demo", "portfolio-graph"]),
+
+    n("admin-permission-boundary", "Admin Permission Boundary", "admin", "authorization", 27, "8개 domain의 29개 권한 code를 route·menu·action과 backend declaration에 함께 적용하는 관리자 권한 경계입니다.", ["USER, SECURITY, BILLING, CONTENT, AI, POLICY, ADMIN_PERMISSION은 CRUD이고 AUDIT은 READ-only입니다.", "일반 ADMIN은 ADMIN_PERMISSION 권한을 위임받을 수 없고 SUPER_ADMIN만 granular permission을 우회합니다.", "권한 조회 실패, 선언 누락과 mock mutation도 fail-closed합니다."], "backend/src/main/java/com/careertuner/admin/permission/catalog/AdminPermissionCatalog.java", ["admin-ui", "security-config", "demo-readiness-ledger"]),
+    n("firebase-phone-trust", "Firebase Phone Trust", "backend", "identity", 22, "Client SMS/reCAPTCHA와 server-side Firebase ID-token 검증을 분리한 전화 인증 경계입니다.", ["Frontend는 named app을 lazy initialize하고 한국 번호를 E.164로 정규화합니다.", "Backend Admin SDK는 revoked token과 phone_number claim을 검증합니다.", "공개 web config는 service-account secret과 다른 범주이며 실제 provider 준비 상태를 증명하지 않습니다."], "backend/src/main/java/com/careertuner/sms/FirebaseAuthClient.java", ["auth-api", "native-auth-handoff", "demo-readiness-ledger"]),
+    n("native-auth-handoff", "Native OAuth Handoff", "frontend", "identity", 24, "Capacitor social login을 PKCE와 one-time hashed handoff code로 browser OAuth에서 app으로 안전하게 되돌리는 경계입니다.", ["64-byte verifier에서 SHA-256 challenge를 만들고 verifier는 app storage에 10분만 둡니다.", "Backend handoff는 code hash/challenge와 3분 expiry만 저장하며 token·verifier 원문을 남기지 않습니다.", "공식 provider HTTPS host/path와 exact verified App/Universal Link만 허용합니다."], "frontend/src/platform/nativeOAuthCore.mjs", ["auth-api", "mobile-native", "pwa-capacitor", "cross-platform-integration"]),
+    n("lifecycle-integrity", "Lifecycle Integrity", "data", "integrity", 26, "Profile snapshot, 탈퇴 비식별화, soft delete, idempotency와 derived media relation을 교차 도메인에서 일관되게 유지합니다.", ["AI operation key와 client submission ID가 model usage·평가·정산 중복을 막습니다.", "Interview media result는 session뿐 아니라 question/answer에 연결하고 orphan·kind 중복을 정리합니다.", "Notification destination은 ALL/WEB/MOBILE/DESKTOP으로 분리합니다."], "backend/src/main/resources/db/patches", ["schema", "soft-delete", "application-case", "cross-platform-integration", "demo-readiness-ledger"]),
+    n("outage-demo-fallback", "AWS-first Outage Demo", "release", "resilience", 25, "정상 시 AWS API를 우선하고 실제 서비스 장애가 확인된 경우에만 read-only mock으로 전환하는 공개 demo 경계입니다.", ["Network error 또는 502/503/504만 장애 후보이며 backup health의 upstream readiness와 DB DOWN 확인이 추가로 필요합니다.", "DB connection/resource만 503이고 constraint·bad SQL·application bug는 500으로 남겨 결함을 mock 성공으로 숨기지 않습니다.", "Outage mode는 저장되지 않음을 표시하고 OAuth·결제를 차단하며 readiness 복구 뒤 real mode로 reload합니다."], "frontend/src/app/lib/outageFallback.ts", ["web-demo", "mock-registry", "demo-readiness-ledger"]),
+    n("model-evidence", "A-F Model Evidence", "ml", "verification", 28, "A~F AI를 fine-tuning, 자체 hosting, PoC와 미검증 provenance로 구분해 실제 artifact와 gate 수준만 공개합니다.", ["A Profile LoRA, B extraction, C strategy QLoRA, D interview multimodal, E correction QLoRA, F self-hosted integration의 증거 수준이 서로 다릅니다.", "C/D/E Qwen2.5-3B는 상업 배포 전 license gate가 필요합니다.", "E 최신 F16/Q4 비교 실패와 F careertuner-mod provenance 누락을 성공 수치로 포장하지 않습니다."], "docs/AI_REPORT/CAREERTUNER_SELF_AI_MODEL_DEEP_DIVE.md", ["qlora-profile", "career-strategy-llm", "interview-finetune", "correction-llm", "evaluation-reports", "demo-readiness-ledger"]),
+    n("cross-platform-integration", "Cross-platform Integration", "release", "verification", 27, "Web·Android·iOS·Qt desktop이 같은 API와 인증·알림·handoff 계약을 공유하면서 platform별 live gate를 분리합니다.", ["Android signed App Link와 Qt package smoke는 PR #395 실행 원장에 PASS가 있습니다.", "iOS는 unsigned source/CI 확인과 signed-device Universal Link 검증을 구분합니다.", "Mobile answer idempotency와 ALL/WEB/MOBILE/DESKTOP notification destination이 공통 data contract를 지킵니다."], "frontend/MOBILE_BUILD.md", ["android-apk", "ios-build", "desktop-release", "native-auth-handoff", "lifecycle-integrity", "demo-readiness-ledger"]),
+    n("demo-readiness-ledger", "Demo Readiness Ledger", "docs", "verification", 30, "Source review, 과거 실행 증거, 최신 targeted delta와 외부 provider live gate를 한 PASS로 섞지 않는 시연 준비 원장입니다.", ["최신 제품 source는 d00a57fc, Obsidian synthesis baseline은 2c4b11a9, synthesis vault merge는 114b6d91, latest projection merge는 248e082b입니다.", "전체 실행 증거 baseline은 PR #395의 30a5511a이며 최신 head 전체 suite를 다시 실행했다고 주장하지 않습니다.", "PR #408은 AI 상담 공백 사유, PR #409는 커뮤니티 desktop 폭을 수정했으므로 두 path의 targeted UI smoke가 다음 candidate gate입니다."], "docs/verification/DEMO_READINESS_LEDGER.md", ["admin-permission-boundary", "firebase-phone-trust", "lifecycle-integrity", "outage-demo-fallback", "model-evidence", "cross-platform-integration", "graph-report"]),
 
     n("architecture-doc", "ARCHITECTURE.md", "docs", "canon", 22, "기술 스택, API, 데이터 모델, 시스템 경계의 정본 문서입니다.", ["이번 graph의 주요 code/domain 해석 기준입니다."], "docs/ARCHITECTURE.md", ["career-tuner", "spring-api", "schema"]),
     n("product-structure", "PRODUCT_STRUCTURE.md", "docs", "canon", 20, "사용자 관점 메뉴와 기능 구조를 정리한 문서입니다.", ["지원 건, 대시보드, AI 면접, 첨삭, 커뮤니티, 결제 구조를 설명합니다."], "docs/PRODUCT_STRUCTURE.md", ["application-case", "dashboard", "interview-prep"]),
@@ -119,9 +128,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("wiki-schema", "Wiki Schema", "wiki", "governance", 19, "Agent의 page class, provenance, cross-link, ingest/query/lint 완료 조건을 정의합니다.", ["한 source의 영향을 여러 page에 통합합니다.", "Page 수가 아니라 근거와 재사용 가능한 연결을 우선합니다."], "docs/obsidian-vault/wiki/systems/wiki-schema.md", ["llm-wiki-architecture", "source-provenance", "llm-wiki-ingest", "llm-wiki-query", "llm-wiki-lint"]),
     n("source-provenance", "Source Provenance", "wiki", "policy", 17, "각 synthesis를 source_count와 source path로 raw 근거까지 추적합니다.", ["공개본에는 검토된 source label과 공개 URL만 표시합니다."], "docs/obsidian-vault/wiki/systems/wiki-schema.md", ["wiki-schema", "raw-sources", "public-export"]),
     n("compounding-knowledge", "Compounding Knowledge", "wiki", "concept", 20, "이미 발견한 연결과 비교를 다음 작업의 출발점으로 남겨 탐색 비용을 누적 절감합니다.", ["Chat에 머물던 결과를 canonical page로 승격합니다.", "Memex의 associative trail을 Wiki link와 graph edge로 구현합니다."], "docs/obsidian-vault/wiki/concepts/compounding-knowledge.md", ["llm-wiki", "llm-wiki-query", "human-review"]),
-    n("graphify-extract", "Graphify Extract Result", "wiki", "graphify", 28, "실제 Graphify code-only AST 추출 결과입니다. 전체 repo 기준 2,870 code files, 26,886 nodes, 91,616 edges를 생성했습니다.", ["API 키 없이 AST 기반으로 실행했습니다.", "backend/frontend/ml 별도 추출 수치를 공개 화면에 반영했습니다.", "원본 graph의 절대경로는 공개하지 않고 repo-relative 요약만 사용합니다."], "TEMP/careertuner-graphify-public/graphify-out/graph.json", ["backend-graph", "frontend-graph", "ml-graph", "graph-report", "code-map"]),
-    n("backend-graph", "Backend Graphify Scope", "wiki", "graphify-scope", 20, "backend 범위 code-only 추출: 1,787 files, 13,548 nodes, 47,689 edges.", ["calls 14,098, references 12,543, imports 12,217를 확인했습니다."], "TEMP/ct-graphify-backend/graphify-out/graph.json", ["spring-api", "mybatis"]),
-    n("frontend-graph", "Frontend Graphify Scope", "wiki", "graphify-scope", 20, "frontend/src 범위 code-only 추출: 571 files, 4,448 nodes, 13,356 edges.", ["contains 3,821, imports 3,701, calls 2,829를 확인했습니다."], "TEMP/ct-graphify-frontend-src/graphify-out/graph.json", ["react-spa", "mock-registry"]),
+    n("graphify-extract", "Graphify Extract Result", "wiki", "graphify", 28, "실제 Graphify code-only AST 추출 결과입니다. 전체 repo 기준 2,870 code files, 26,886 nodes, 91,616 edges를 생성했습니다.", ["API 키 없이 AST 기반으로 실행했습니다.", "backend/frontend/ml 별도 추출 수치를 공개 화면에 반영했습니다.", "원본 graph의 절대경로는 공개하지 않고 공개 graph data 경로와 요약만 사용합니다."], "Obsidian/SecondBrain/graph-data.js", ["backend-graph", "frontend-graph", "ml-graph", "graph-report", "code-map"]),
+    n("backend-graph", "Backend Graphify Scope", "wiki", "graphify-scope", 20, "backend 범위 code-only 추출: 1,787 files, 13,548 nodes, 47,689 edges.", ["calls 14,098, references 12,543, imports 12,217를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["spring-api", "mybatis"]),
+    n("frontend-graph", "Frontend Graphify Scope", "wiki", "graphify-scope", 20, "frontend/src 범위 code-only 추출: 571 files, 4,448 nodes, 13,356 edges.", ["contains 3,821, imports 3,701, calls 2,829를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["react-spa", "mock-registry"]),
     n("graph-report", "GRAPH_REPORT.md", "wiki", "report", 18, "Graphify hub, bridge, surprising link, agent 시작 prompt를 요약한 report입니다.", ["실제 code-only 결과와 curated wiki report를 함께 사용합니다."], "docs/obsidian-vault/graphify-out/GRAPH_REPORT.md", ["graphify-extract", "agent-ladder"]),
     n("agent-ladder", "3-layer Query Rule", "wiki", "protocol", 22, "Graph query → Obsidian wiki search → raw/source reading 순서로 agent 탐색 비용을 줄입니다.", ["코드를 덜 읽는 것이 아니라 읽을 코드를 빠르게 좁히는 전략입니다."], "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md", ["wiki-index", "graph-report", "code-map", "llm-wiki-query", "wiki-search-tooling"]),
     n("ingest-query-lint", "Ingest / Query / Lint", "wiki", "operation", 20, "Source 통합, 검증된 질문, 결과 승격과 knowledge health check를 연결합니다.", ["Wiki를 살아있는 지식 베이스로 유지하고 다음 agent의 반복 분석을 줄입니다."], "docs/obsidian-vault/wiki/operations/ingest-query-lint.md", ["wiki-log", "llm-wiki", "llm-wiki-ingest", "llm-wiki-query", "llm-wiki-lint"]),
@@ -137,6 +146,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
   ];
 
   const highlights = [
+    h("시연 준비 경계", "최신 source, Obsidian synthesis, synthesis merge, latest projection merge와 과거 full execution baseline을 분리해 검증 범위를 과장하지 않습니다.", "d00a57fc source"),
     h("Graphify 실제 추출", "API 키 없이 code-only AST 추출을 실행해 전체 repo에서 26,886 nodes / 91,616 edges를 확인했습니다.", "2,870 code files"),
     h("백엔드 구현 밀도", "Spring Boot 4.1, Java 21, MyBatis 기반 backend만 별도 추출해 13,548 nodes / 47,689 edges가 나왔습니다.", "1,787 files"),
     h("프런트/관리자 표면", "React SPA의 사용자/관리자 화면과 mock registry를 frontend/src 단위로 추출했습니다.", "4,448 nodes"),
@@ -164,7 +174,8 @@ window.SECOND_BRAIN_GRAPH = (() => {
     page("Release CI and Public Demo", "Pages/APK/iOS/desktop channel과 release gate.", "docs/obsidian-vault/wiki/project/release-ci-and-public-demo.md", "delivery/release-demo"),
     page("Repository and Knowledge Boundaries", "Main, submodule와 public Demo의 저장 책임.", "docs/obsidian-vault/wiki/project/repository-and-knowledge-boundaries.md", "governance/repository-boundaries"),
     page("Team Ownership and Governance", "A~F vertical ownership와 common owner boundary.", "docs/obsidian-vault/wiki/project/team-ownership-and-governance.md", "governance/team-ownership"),
-    page("Portfolio Evidence Map", "Graphify extraction과 110-node evidence navigation.", "docs/obsidian-vault/wiki/project/portfolio-evidence-map.md", "evidence/portfolio-map"),
+    page("Demo Readiness Refresh", "Admin/auth/data/outage/A~F/platform gate와 최신 UI delta를 source·실행 증거별로 분리한 공개 원장.", "docs/verification/DEMO_READINESS_LEDGER.md", "project/readiness-refresh"),
+    page("Portfolio Evidence Map", `Graphify extraction과 ${nodes.length}-node evidence navigation.`, "Obsidian/SecondBrain/graph-data.js", "evidence/portfolio-map"),
     page("CareerTuner Second Brain", "Obsidian, Graphify, LLM Wiki, public demo를 연결하는 전체 구조.", "docs/obsidian-vault/wiki/systems/careertuner-second-brain.md", "systems/careertuner-second-brain"),
     page("Agent Memory Protocol", "Codex/Claude Code류 agent가 graph/wiki/source를 읽는 우선순위.", "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md", "systems/agent-memory-protocol"),
     page("LLM Wiki Architecture", "Query-time retrieval 위에 raw/wiki/schema의 persistent synthesis를 두는 구조.", "docs/obsidian-vault/wiki/systems/llm-wiki-architecture.md", "systems/llm-wiki-architecture"),
@@ -192,7 +203,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
     code("Mock Registry", "웹 데모/APK를 백엔드 없이 자체완결로 실행하는 핵심 프런트 장치입니다.", "frontend/src/app/lib/mock", ["Frontend", "Demo"]),
     code("Admin Routes", "사용자 기능과 짝을 이루는 관리자 콘솔 라우팅 표면입니다.", "frontend/src/admin/routes.ts", ["Frontend", "Admin"]),
     code("Job Posting Worker", "문서 추출, OCR smoke, Docker smoke, release readiness 검사를 가진 Python worker입니다.", "ml/job-posting-worker/README.md", ["ML", "Worker"]),
-    code("Career Strategy Reports", "RAG hardcase, evidence gate, semantic judge 등 C 모델 개선 이력이 누적됩니다.", "docs/ai-reports/areas/c-career-strategy/reports", ["ML", "Docs"]),
+    code("Career Strategy Reports", "RAG hardcase, evidence gate, semantic judge 등 C 모델 개선 이력이 누적됩니다.", privateEvidence("private evidence (not published): AI evaluation reports"), ["ML", "Docs"]),
   ];
 
   const sources = [
@@ -206,9 +217,14 @@ window.SECOND_BRAIN_GRAPH = (() => {
   return {
     meta: {
       name: "CareerTuner Portfolio Knowledge Graph",
-      updated: "2026-07-10",
+      updated: "2026-07-13",
       visibility: "portfolio-public",
       graphifyExtracted: true,
+      latestSourceSha: "d00a57fc8d1e3499ba6c23acec498c47ac0d5d4c",
+      synthesisSourceSha: "2c4b11a9b39d2bc34343797887722616091203e3",
+      synthesisVaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      latestProjectionMergeSha: "248e082b0ccf4f17e39a7cdc3728b1a8fe2ee3ec",
+      executionBaselineSha: "30a5511a13a6a304fdf13231bfea1afe7a335c2e",
     },
     groups,
     nodes,
@@ -219,8 +235,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
     sources,
   };
 
-  function n(id, label, group, type, weight, summary, points, path, links) {
-    return { id, label, group, type, weight, summary, points, path, links };
+  function n(id, label, group, type, weight, summary, points, evidenceValue, links) {
+    const evidence = normalizeEvidence(evidenceValue);
+    return { id, label, group, type, weight, summary, points, path: evidence.path, evidence, links };
   }
 
   function h(title, summary, metric) {
@@ -235,8 +252,27 @@ window.SECOND_BRAIN_GRAPH = (() => {
     return { title, summary, path, wikiId };
   }
 
-  function code(title, summary, path, tags) {
-    return { title, summary, path, tags };
+  function code(title, summary, evidenceValue, tags) {
+    const evidence = normalizeEvidence(evidenceValue);
+    return { title, summary, path: evidence.path, evidence, tags };
+  }
+
+  function privateEvidence(label) {
+    return { visibility: "private", label, path: "" };
+  }
+
+  function normalizeEvidence(value) {
+    if (typeof value === "string") {
+      return { visibility: "public", label: "published evidence", path: value };
+    }
+    if (value && typeof value === "object") {
+      return {
+        visibility: value.visibility || "public",
+        label: value.label || "published evidence",
+        path: value.path || "",
+      };
+    }
+    return { visibility: "unrecorded", label: "evidence not recorded", path: "" };
   }
 
   function source(title, summary, href) {

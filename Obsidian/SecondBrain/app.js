@@ -121,6 +121,7 @@ function matches(item) {
     item.type,
     item.summary,
     item.path,
+    item.evidence?.label,
     groups[item.group].label,
     ...(item.points || []),
     ...getNeighbors(item.id).map((neighbor) => neighbor.label),
@@ -147,7 +148,9 @@ function selectNode(item) {
   detailGroup.textContent = `${groups[item.group].label} · ${item.type}`;
   detailTitle.textContent = item.label;
   detailSummary.textContent = item.summary;
-  detailPath.textContent = item.path || "";
+  detailPath.textContent = item.evidence?.visibility === "private"
+    ? item.evidence.label
+    : item.path || item.evidence?.label || "";
   detailWikiLink.href = `../Wiki/#evidence/${encodeURIComponent(item.id)}`;
   detailWikiLink.setAttribute("aria-label", `${item.label} Wiki evidence 읽기`);
   detailPoints.textContent = "";
@@ -409,7 +412,8 @@ function renderWiki() {
 function renderCodeCards() {
   codeGrid.textContent = "";
   codeCards.forEach((item) => {
-    codeGrid.append(createInfoCard(item.title, item.summary, item.path, item.tags));
+    const evidenceLabel = item.evidence?.visibility === "private" ? item.evidence.label : item.path;
+    codeGrid.append(createInfoCard(item.title, item.summary, evidenceLabel, item.tags));
   });
 }
 

@@ -1,5 +1,5 @@
 const wikiData = window.CAREERTUNER_WIKI;
-const { groups, pages } = wikiData;
+const { groups, pages, meta } = wikiData;
 
 const wikiSearch = document.getElementById("wikiSearch");
 const wikiNav = document.getElementById("wikiNav");
@@ -11,6 +11,11 @@ const relatedPages = document.getElementById("relatedPages");
 const openSidebar = document.getElementById("openSidebar");
 const closeSidebar = document.getElementById("closeSidebar");
 const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+const sidebarSummary = document.getElementById("sidebarSummary");
+
+if (sidebarSummary && meta?.counts) {
+  sidebarSummary.textContent = `제품·기능·API·DB·AI/ML·배포 ${meta.counts.curated}개 본문과 ${meta.counts.evidence}개 코드·문서 evidence를 공개합니다.`;
+}
 
 const pageById = new Map(pages.map((page) => [page.id, page]));
 const groupById = new Map(groups.map((group) => [group.id, group]));
@@ -112,6 +117,7 @@ function renderArticle(page) {
         <time datetime="${escapeAttribute(page.updated)}">Updated ${escapeHtml(page.updated)}</time>
         ${sources.length > 0 ? `<span class="source-count">${sources.length} public source${sources.length === 1 ? "" : "s"}</span>` : ""}
         ${sourcePaths.length > 0 ? `<span class="source-count">${sourcePaths.length} evidence path${sourcePaths.length === 1 ? "" : "s"}</span>` : ""}
+        ${page.evidenceVisibility === "private" ? `<span class="source-count">${escapeHtml(page.evidenceLabel)}</span>` : ""}
         ${(page.tags || []).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
       </div>
       ${sources.length > 0 ? `
