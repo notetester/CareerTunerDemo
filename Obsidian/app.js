@@ -603,7 +603,7 @@ const nodes = [
     "Server-side prep job/device persistence는 미구현으로 명시합니다.",
   ], ["release-matrix", "android-apk", "ios-build", "desktop-zip", "native-auth-handoff", "lifecycle-integrity", "demo-readiness-ledger"]),
   node("demo-readiness-ledger", "시연 준비 원장", "governance", "verification", 22, "Source review, 실행 증거, targeted delta와 외부 live gate를 서로 다른 기준으로 기록합니다.", [
-    "최신 source d00a57fc, synthesis 2c4b11a9, vault merge 114b6d91을 구분합니다.",
+    "최신 source d00a57fc, synthesis 2c4b11a9, synthesis vault merge 114b6d91, latest projection merge 248e082b를 구분합니다.",
     "Full execution evidence는 PR #395의 30a5511a이며 최신 head 전체 rerun으로 과장하지 않습니다.",
     "PR #408 관리자 문구와 PR #409 community desktop 폭은 다음 candidate의 targeted UI gate입니다.",
   ], ["release-matrix", "admin-permission-boundary", "firebase-phone-trust", "outage-demo-fallback", "model-evidence", "cross-platform-integration"]),

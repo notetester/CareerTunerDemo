@@ -152,7 +152,8 @@ window.CAREERTUNER_WIKI = (() => {
             [
               ["Latest product source", "d00a57fc", "PR #408/#409까지 포함한 현재 공개 source review"],
               ["Obsidian synthesis baseline", "2c4b11a9", "Admin/auth/data/outage/A~F/platform을 전면 합성한 code 기준"],
-              ["Obsidian vault merge", "114b6d91", "위 synthesis가 vault main에 병합된 commit"],
+              ["Synthesis vault merge", "114b6d91", "위 synthesis가 vault main에 병합된 commit"],
+              ["Latest projection merge", "248e082b", "PR #408/#409 UI delta와 공개 graph가 vault main에 병합된 commit"],
               ["Full execution evidence", "30a5511a", "PR #395의 backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
             ],
           ),
@@ -190,7 +191,7 @@ window.CAREERTUNER_WIKI = (() => {
             ["영역", "구조"],
             [
               ["Backend", "Spring Boot 4.1, Java 21, Spring Security, MyBatis, MySQL 8"],
-              ["Frontend", "React 18, Vite 6, TypeScript, Tailwind v4 사용자·관리자 SPA"],
+              ["Frontend", "React 19.2.7, Vite 8.1.4, TypeScript 7.0.2, Tailwind v4 사용자·관리자 SPA"],
               ["AI/ML", "OpenAI Responses, Ollama/local provider, schema/evidence gate, A~F model track"],
               ["Distribution", "GitHub Pages, PWA, Android APK, iOS simulator, Qt desktop"],
               ["Knowledge", "Obsidian, LLM Wiki와 Graphify code/document graph"],
@@ -634,7 +635,7 @@ window.CAREERTUNER_WIKI = (() => {
       "Pages, Android, iOS와 desktop artifact를 mock/full-stack mode로 분리하고 typecheck·test·secret·live smoke를 gate로 사용하는 release flow입니다.",
       ["delivery", "release", "ci", "github-pages"],
       ["delivery/mobile-desktop", "engineering/frontend-demo", "governance/repository-boundaries", "evidence/catalog"],
-      ["docs/RELEASE.md", ".github/workflows", "frontend/MOBILE_BUILD.md", "desktop/scripts/package-windows.ps1", "CareerTunerDemo"],
+      ["docs/RELEASE.md", ".github/workflows", "frontend/MOBILE_BUILD.md", "desktop/scripts/package-windows.ps1", "Obsidian/index.html"],
       [
         section("matrix", "Channel Matrix",
           table(
@@ -656,7 +657,8 @@ window.CAREERTUNER_WIKI = (() => {
             [
               ["Latest product source", "d00a57fc", "PR #408/#409 UI delta까지 source review"],
               ["Obsidian synthesis", "2c4b11a9", "교차 영역 전면 ingest 기준"],
-              ["Vault merge", "114b6d91", "공개 projection의 지식 source"],
+              ["Synthesis vault merge", "114b6d91", "교차 영역 전면 synthesis의 병합 기준"],
+              ["Latest projection merge", "248e082b", "최신 UI delta와 공개 graph의 병합 기준"],
               ["Full execution", "PR #395 · 30a5511a", "Backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
             ],
           ),
@@ -712,7 +714,8 @@ window.CAREERTUNER_WIKI = (() => {
             [
               ["Latest product source", "d00a57fc", "PR #408/#409까지 포함한 최신 source diff 기준"],
               ["Obsidian synthesis source", "2c4b11a9", "교차 영역을 전면 대조한 synthesis 기준"],
-              ["Obsidian vault merge", "114b6d91", "synthesis가 vault main에 병합된 commit"],
+              ["Synthesis vault merge", "114b6d91", "synthesis가 vault main에 병합된 commit"],
+              ["Latest projection merge", "248e082b", "UI delta와 공개 graph가 vault main에 병합된 commit"],
               ["Full release evidence", "PR #395 · 30a5511a", "Backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
               ["Current-head full rerun", "미수행", "이 공개 projection은 source review이며 전체 제품 suite 재실행이 아님"],
             ],
@@ -751,7 +754,7 @@ window.CAREERTUNER_WIKI = (() => {
           ),
         ),
         section("freshness", "Freshness Contract",
-          paragraph("최신 source SHA, synthesis source SHA, vault merge SHA와 execution baseline SHA를 서로 다른 필드로 유지합니다. 이후 변경 path가 admin/auth/data/outage/platform/AI 경계와 겹칠 때만 targeted re-ingest하며 unrelated commit 때문에 완료 날짜만 갱신하지 않습니다."),
+          paragraph("최신 source SHA, synthesis source SHA, synthesis vault merge SHA, latest projection merge SHA와 execution baseline SHA를 서로 다른 필드로 유지합니다. 이후 변경 path가 admin/auth/data/outage/platform/AI 경계와 겹칠 때만 targeted re-ingest하며 unrelated commit 때문에 완료 날짜만 갱신하지 않습니다."),
         ),
       ],
     ),
@@ -1761,7 +1764,7 @@ window.CAREERTUNER_WIKI = (() => {
           timeline(
             ["ingest", "Demo readiness refresh", "Admin 29-code permission, Firebase/native identity, DB lifecycle, AWS-first outage, A~F evidence와 platform live gate를 2c4b11a9 source 기준으로 합성했습니다."],
             ["verify", "Latest product UI delta", "d00a57fc까지 PR #408 AI 상담 공백 사유와 PR #409 community desktop width 두 path를 source diff로 대조했습니다."],
-            ["publish", "Public knowledge projection", "114b6d91 vault merge의 공개 가능한 판단을 {{evidence}}개 graph evidence와 {{curated}}개 curated article에 반영했습니다."],
+            ["publish", "Public knowledge projection", "114b6d91 synthesis merge와 248e082b latest projection merge의 공개 가능한 판단을 {{evidence}}개 graph evidence와 {{curated}}개 curated article에 반영했습니다."],
           ),
         ),
         section("timeline", "2026-07-10",
@@ -1812,7 +1815,22 @@ window.CAREERTUNER_WIKI = (() => {
     const related = (node.links || []).map((id) => `evidence/${id}`);
     const groupLabel = projectGraph.groups?.[node.group]?.label || node.group || "Project";
     const evidencePoints = node.points?.length ? node.points : ["Curated graph에서 확인된 project evidence node입니다."];
-    const sourcePath = node.path || "Source path not recorded";
+    const evidence = node.evidence || {
+      visibility: node.path ? "public" : "unrecorded",
+      label: node.path ? "published evidence" : "evidence not recorded",
+      path: node.path || "",
+    };
+    const sourcePaths = evidence.visibility === "public" && evidence.path ? [evidence.path] : [];
+    const evidenceStatus = evidence.visibility === "private"
+      ? evidence.label
+      : evidence.path || evidence.label;
+    const pageOptions = {
+      navHidden: true,
+      graphNodeId: node.id,
+      evidenceVisibility: evidence.visibility,
+      evidenceLabel: evidence.label,
+    };
+    if (sourcePaths.length > 0) pageOptions.sourcePaths = sourcePaths;
 
     return page(
       `evidence/${node.id}`,
@@ -1829,6 +1847,7 @@ window.CAREERTUNER_WIKI = (() => {
             [
               ["Graph group", groupLabel],
               ["Evidence type", node.type || "project"],
+              ["Evidence visibility", evidence.visibility],
               ["Graph weight", String(node.weight || 1)],
             ],
           ),
@@ -1836,9 +1855,11 @@ window.CAREERTUNER_WIKI = (() => {
         section("implementation", "Implementation Evidence",
           list(...evidencePoints),
         ),
-        section("source", "Source Path",
-          code("text", sourcePath),
-          paragraph("경로는 portfolio review를 위한 repo-relative evidence입니다. 현재 구현 여부와 세부 contract는 해당 runtime source와 담당 README에서 최종 확인합니다."),
+        section("source", "Evidence Provenance",
+          code("text", evidenceStatus),
+          evidence.visibility === "private"
+            ? callout("비공개 근거", "이 node는 공개 가능한 요약만 제공하며, private submodule의 내부 파일 경로를 공개 source path로 세지 않습니다.", "warning")
+            : paragraph("경로는 portfolio review를 위한 공개 evidence입니다. 현재 구현 여부와 세부 contract는 해당 runtime source와 담당 README에서 최종 확인합니다."),
         ),
         section("connections", "Connected Knowledge",
           related.length > 0
@@ -1847,7 +1868,7 @@ window.CAREERTUNER_WIKI = (() => {
         ),
       ],
       [],
-      { navHidden: true, sourcePaths: [sourcePath], graphNodeId: node.id },
+      pageOptions,
     );
   });
 
@@ -1856,6 +1877,8 @@ window.CAREERTUNER_WIKI = (() => {
     curated: curatedPageCount,
     project: projectArticleCount,
     evidence: evidencePages.length,
+    publishedEvidencePaths: evidencePages.filter((item) => item.sourcePaths?.length > 0).length,
+    privateEvidence: evidencePages.filter((item) => item.evidenceVisibility === "private").length,
     total: pages.length,
     sections: pages.reduce((sum, item) => sum + (item.sections?.length || 0), 0),
   };
@@ -1870,7 +1893,8 @@ window.CAREERTUNER_WIKI = (() => {
       counts,
       latestSourceSha: "d00a57fc8d1e3499ba6c23acec498c47ac0d5d4c",
       synthesisSourceSha: "2c4b11a9b39d2bc34343797887722616091203e3",
-      vaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      synthesisVaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      latestProjectionMergeSha: "248e082b0ccf4f17e39a7cdc3728b1a8fe2ee3ec",
       executionBaselineSha: "30a5511a13a6a304fdf13231bfea1afe7a335c2e",
     },
     groups,

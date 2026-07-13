@@ -16,7 +16,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
 
   const nodes = [
     n("career-tuner", "CareerTuner", "hub", "portfolio-root", 36, "채용공고, 지원자 스펙, AI 분석, 면접, 첨삭, 릴리즈 산출물을 하나의 지원 건 중심으로 묶은 AI 취업 전략 플랫폼입니다.", ["지원 건이 제품·DB·AI 파이프라인의 중심 단위입니다.", "백엔드, 프런트, 관리자, ML 실험, 데이터 수명주기와 다중 플랫폼 배포가 같은 graph 안에서 연결됩니다.", "공개 projection은 credential과 개인 데이터를 제외하고 source 기준·실행 증거·미완료 gate를 분리합니다."], "README.md", ["application-case", "spring-api", "react-spa", "ai-orchestrator", "graphify-extract", "obsidian-wiki", "web-demo", "demo-readiness-ledger"]),
-    n("portfolio-graph", "Portfolio Knowledge Graph", "hub", "public-view", 30, "CareerTunerDemo에 공개하는 포트폴리오용 wiki/Graphify 시각화입니다.", ["단순 개념도가 아니라 실제 문서·코드 경로·Graphify 추출 수치를 함께 보여줍니다.", "검색, 그룹 필터, 상세 패널, wiki/code 카드로 리뷰어가 구조를 따라갈 수 있습니다.", "민감값은 제외하지만 기술 구조와 구현 범위는 적극적으로 공개합니다."], "CareerTunerDemo/Obsidian/SecondBrain", ["career-tuner", "graphify-extract", "wiki-index", "architecture-doc", "code-map"]),
+    n("portfolio-graph", "Portfolio Knowledge Graph", "hub", "public-view", 30, "CareerTunerDemo에 공개하는 포트폴리오용 wiki/Graphify 시각화입니다.", ["단순 개념도가 아니라 실제 문서·코드 경로·Graphify 추출 수치를 함께 보여줍니다.", "검색, 그룹 필터, 상세 패널, wiki/code 카드로 리뷰어가 구조를 따라갈 수 있습니다.", "민감값은 제외하지만 기술 구조와 구현 범위는 적극적으로 공개합니다."], "Obsidian/SecondBrain", ["career-tuner", "graphify-extract", "wiki-index", "architecture-doc", "code-map"]),
     n("code-map", "Code Map", "hub", "curated-graph", 26, "Graphify code-only AST 결과를 사람이 읽기 좋은 포트폴리오 graph로 압축한 지도입니다.", ["원본 graph.json은 75MB 규모라 public demo에는 요약 graph만 싣습니다.", "절대경로와 환경값을 제거하고 repo-relative 경로와 집계 수치를 사용합니다.", "실제 추출 수치와 curated node를 같이 노출해 과장 없이 강점을 보여줍니다."], "Obsidian/SecondBrain/graph-data.js", ["graphify-extract", "backend-graph", "frontend-graph", "ml-graph"]),
 
     n("application-case", "지원 건", "product", "core-domain", 28, "CareerTuner의 핵심 업무 단위입니다. 한 기업·직무·공고 조합에 공고 분석, 기업 분석, 적합도, 면접, 첨삭 기록이 모입니다.", ["공고 여러 개를 묶는 단위가 아니라 같은 공고 revision과 분석 이력을 관리합니다.", "archived_at/deleted_at으로 보관과 삭제를 분리합니다.", "사용자 화면과 관리자 운영 화면의 기준이 됩니다."], "docs/ARCHITECTURE.md", ["applicationcase-api", "job-posting", "analysis-run", "soft-delete", "dashboard"]),
@@ -45,7 +45,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("support-api", "Support API", "backend", "api", 17, "공지, FAQ, 문의, 챗봇 FAQ, 미답변 질문 mapper와 controller를 포함합니다.", ["사용자 지원과 관리자 운영의 연결 지점입니다."], "backend/src/main/resources/mapper/support", ["support", "support-ui", "admin-support"]),
     n("jackson-convention", "Jackson 3 Convention", "backend", "guardrail", 16, "Spring Boot 4 환경에서 Jackson 3 ObjectMapper 사용 규칙을 테스트로 고정합니다.", ["직접 new ObjectMapper와 Jackson 2 import를 차단합니다."], "backend/src/test/java/com/careertuner/JacksonUsageConventionTests.java", ["spring-api"]),
 
-    n("react-spa", "React SPA", "frontend", "stack", 27, "React 18, Vite 6, TypeScript, Tailwind v4 기반 사용자/관리자 반응형 SPA입니다.", ["Graphify frontend/src 추출: 571 code files, 4,448 nodes, 13,356 edges.", "사용자와 관리자 화면을 한 앱에서 관리합니다.", "mock demo, PWA, Capacitor 패키징이 같은 dist를 공유합니다."], "frontend/README.md", ["routes", "mock-registry", "admin-ui", "pwa-capacitor"]),
+    n("react-spa", "React SPA", "frontend", "stack", 27, "React 19.2.7, Vite 8.1.4, TypeScript 7.0.2, Tailwind v4 기반 사용자/관리자 반응형 SPA입니다.", ["Graphify frontend/src 추출: 571 code files, 4,448 nodes, 13,356 edges.", "사용자와 관리자 화면을 한 앱에서 관리합니다.", "mock demo, PWA, Capacitor 패키징이 같은 dist를 공유합니다."], "frontend/package.json", ["routes", "mock-registry", "admin-ui", "pwa-capacitor"]),
     n("routes", "Routes", "frontend", "routing", 18, "사용자 라우트와 관리자 라우트를 연결하는 SPA 진입 구조입니다.", ["라우팅은 공통 영향이 큰 영역입니다.", "공개 demo와 404 fallback에서도 중요합니다."], "frontend/src/app/routes.ts", ["react-spa", "admin-ui"]),
     n("app-layout", "App Layout", "frontend", "ui", 16, "Header, Footer, Root, 공통 UI primitive를 통해 제품 경험을 구성합니다.", ["Figma Make 초안을 점진적으로 기능 모듈 구조로 옮깁니다."], "frontend/src/app/components", ["react-spa", "responsive"]),
     n("mock-registry", "Mock Registry", "frontend", "demo", 22, "정적 체험용 mock과 장애 시 read-only fallback 데이터를 제공하는 API registry입니다.", ["정적 mock build와 AWS-first outage fallback은 서로 다른 mode입니다.", "일반 Sites build는 실제 API를 먼저 사용하고 readiness가 확인된 장애에서만 mock으로 전환합니다."], "frontend/src/app/lib/mock", ["web-demo", "android-apk", "dashboard-ui", "admin-ui", "outage-demo-fallback"]),
@@ -81,9 +81,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("nonverbal", "Nonverbal Interview", "ml", "model-area", 17, "표정·시선·자세 분석을 면접 태도 개선 참고자료로 다루는 ML 영역입니다.", ["합격/불합격 판단이 아니라 피드백 보조로 제한합니다."], "ml/interview-nonverbal/README.md", ["interview-prep"]),
     n("job-posting-worker", "Job Posting Worker", "ml", "worker", 21, "PDF/이미지/문서 텍스트 추출과 공고문 처리 안정화를 담당하는 Python worker입니다.", ["Graphify ML 추출에도 많은 테스트와 scripts가 잡힙니다.", "OCR runtime smoke, Docker smoke, release readiness 검사가 있습니다."], "ml/job-posting-worker/README.md", ["job-posting", "jobanalysis-api"]),
     n("qlora-profile", "Profile QLoRA Training", "ml", "training", 16, "A 영역 Qwen3-4B Profile LoRA v4 학습 실험입니다.", ["3,000개 학습 data와 0.8145% trainable parameter 증거를 기록합니다.", "Artifact는 저장소 밖이고 runtime 기본 OFF라 재현·운영 완료로 과장하지 않습니다."], "docs/ai-training/README.md", ["evaluation-reports", "model-evidence"]),
-    n("4090-ops", "4090 Ops", "ops", "infrastructure", 18, "공유 GPU, Ollama, OpenSSH, Tailscale 운영 스크립트와 상태 문서를 관리합니다.", ["AI 실험과 로컬 LLM provider를 실제 운영 환경으로 연결합니다."], "docs/ai-artifacts/STATUS_4090.md", ["ollama-provider", "evaluation-reports"]),
-    n("evaluation-reports", "AI Reports", "ml", "evidence", 20, "C career strategy와 기타 AI 실험의 반복 평가 보고서를 submodule에 축적합니다.", ["장문 보고서는 main repo가 아니라 ai-reports submodule에 둡니다.", "포트폴리오에서는 모델 개선 과정을 보여주는 강점입니다."], "docs/ai-reports/areas/c-career-strategy/reports", ["career-strategy-llm", "ai-boundaries"]),
-    n("ml-graph", "Graphify ML Extract", "ml", "graphify-scope", 18, "Graphify code-only 추출 결과: ml 204 files, 2,016 nodes, 4,830 edges.", ["calls 1,531, contains 1,048, imports 621, references 539를 확인했습니다."], "TEMP/ct-graphify-ml/graphify-out/graph.json", ["graphify-extract", "career-strategy-llm", "job-posting-worker"]),
+    n("4090-ops", "4090 Ops", "ops", "infrastructure", 18, "공유 GPU, Ollama, OpenSSH, Tailscale 운영 스크립트와 상태 문서를 관리합니다.", ["AI 실험과 로컬 LLM provider를 실제 운영 환경으로 연결합니다."], privateEvidence("private evidence (not published): 4090 operations status"), ["ollama-provider", "evaluation-reports"]),
+    n("evaluation-reports", "AI Reports", "ml", "evidence", 20, "C career strategy와 기타 AI 실험의 반복 평가 보고서를 submodule에 축적합니다.", ["장문 보고서는 main repo가 아니라 ai-reports submodule에 둡니다.", "포트폴리오에서는 모델 개선 과정을 보여주는 강점입니다."], privateEvidence("private evidence (not published): AI evaluation reports"), ["career-strategy-llm", "ai-boundaries"]),
+    n("ml-graph", "Graphify ML Extract", "ml", "graphify-scope", 18, "Graphify code-only 추출 결과: ml 204 files, 2,016 nodes, 4,830 edges.", ["calls 1,531, contains 1,048, imports 621, references 539를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["graphify-extract", "career-strategy-llm", "job-posting-worker"]),
 
     n("schema", "DB Schema", "data", "database", 24, "users, application_case, analysis_run, fit_analysis, payment, credit, consent와 플랫폼 handoff를 포함한 핵심 데이터 모델입니다.", ["지원 건 중심의 1:N 분석 이력과 immutable profile snapshot을 허용합니다.", "탈퇴·soft delete·idempotency·derived media relation을 patch와 mapper predicate로 함께 관리합니다."], "backend/src/main/resources/db/schema.sql", ["users", "application-case-table", "analysis-run", "fit-analysis-table", "payment-credit", "consent", "lifecycle-integrity"]),
     n("users", "Users/Profile", "data", "table-family", 16, "회원, 프로필, 프로필 버전을 공고 분석 비교 기준으로 사용합니다.", ["인증, 지원 건, AI 분석의 기준 엔터티입니다."], "backend/src/main/resources/mapper/user", ["auth-api", "schema"]),
@@ -109,7 +109,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("outage-demo-fallback", "AWS-first Outage Demo", "release", "resilience", 25, "정상 시 AWS API를 우선하고 실제 서비스 장애가 확인된 경우에만 read-only mock으로 전환하는 공개 demo 경계입니다.", ["Network error 또는 502/503/504만 장애 후보이며 backup health의 upstream readiness와 DB DOWN 확인이 추가로 필요합니다.", "DB connection/resource만 503이고 constraint·bad SQL·application bug는 500으로 남겨 결함을 mock 성공으로 숨기지 않습니다.", "Outage mode는 저장되지 않음을 표시하고 OAuth·결제를 차단하며 readiness 복구 뒤 real mode로 reload합니다."], "frontend/src/app/lib/outageFallback.ts", ["web-demo", "mock-registry", "demo-readiness-ledger"]),
     n("model-evidence", "A-F Model Evidence", "ml", "verification", 28, "A~F AI를 fine-tuning, 자체 hosting, PoC와 미검증 provenance로 구분해 실제 artifact와 gate 수준만 공개합니다.", ["A Profile LoRA, B extraction, C strategy QLoRA, D interview multimodal, E correction QLoRA, F self-hosted integration의 증거 수준이 서로 다릅니다.", "C/D/E Qwen2.5-3B는 상업 배포 전 license gate가 필요합니다.", "E 최신 F16/Q4 비교 실패와 F careertuner-mod provenance 누락을 성공 수치로 포장하지 않습니다."], "docs/AI_REPORT/CAREERTUNER_SELF_AI_MODEL_DEEP_DIVE.md", ["qlora-profile", "career-strategy-llm", "interview-finetune", "correction-llm", "evaluation-reports", "demo-readiness-ledger"]),
     n("cross-platform-integration", "Cross-platform Integration", "release", "verification", 27, "Web·Android·iOS·Qt desktop이 같은 API와 인증·알림·handoff 계약을 공유하면서 platform별 live gate를 분리합니다.", ["Android signed App Link와 Qt package smoke는 PR #395 실행 원장에 PASS가 있습니다.", "iOS는 unsigned source/CI 확인과 signed-device Universal Link 검증을 구분합니다.", "Mobile answer idempotency와 ALL/WEB/MOBILE/DESKTOP notification destination이 공통 data contract를 지킵니다."], "frontend/MOBILE_BUILD.md", ["android-apk", "ios-build", "desktop-release", "native-auth-handoff", "lifecycle-integrity", "demo-readiness-ledger"]),
-    n("demo-readiness-ledger", "Demo Readiness Ledger", "docs", "verification", 30, "Source review, 과거 실행 증거, 최신 targeted delta와 외부 provider live gate를 한 PASS로 섞지 않는 시연 준비 원장입니다.", ["최신 제품 source는 d00a57fc, Obsidian synthesis baseline은 2c4b11a9, vault merge는 114b6d91입니다.", "전체 실행 증거 baseline은 PR #395의 30a5511a이며 최신 head 전체 suite를 다시 실행했다고 주장하지 않습니다.", "PR #408은 AI 상담 공백 사유, PR #409는 커뮤니티 desktop 폭을 수정했으므로 두 path의 targeted UI smoke가 다음 candidate gate입니다."], "docs/verification/DEMO_READINESS_LEDGER.md", ["admin-permission-boundary", "firebase-phone-trust", "lifecycle-integrity", "outage-demo-fallback", "model-evidence", "cross-platform-integration", "graph-report"]),
+    n("demo-readiness-ledger", "Demo Readiness Ledger", "docs", "verification", 30, "Source review, 과거 실행 증거, 최신 targeted delta와 외부 provider live gate를 한 PASS로 섞지 않는 시연 준비 원장입니다.", ["최신 제품 source는 d00a57fc, Obsidian synthesis baseline은 2c4b11a9, synthesis vault merge는 114b6d91, latest projection merge는 248e082b입니다.", "전체 실행 증거 baseline은 PR #395의 30a5511a이며 최신 head 전체 suite를 다시 실행했다고 주장하지 않습니다.", "PR #408은 AI 상담 공백 사유, PR #409는 커뮤니티 desktop 폭을 수정했으므로 두 path의 targeted UI smoke가 다음 candidate gate입니다."], "docs/verification/DEMO_READINESS_LEDGER.md", ["admin-permission-boundary", "firebase-phone-trust", "lifecycle-integrity", "outage-demo-fallback", "model-evidence", "cross-platform-integration", "graph-report"]),
 
     n("architecture-doc", "ARCHITECTURE.md", "docs", "canon", 22, "기술 스택, API, 데이터 모델, 시스템 경계의 정본 문서입니다.", ["이번 graph의 주요 code/domain 해석 기준입니다."], "docs/ARCHITECTURE.md", ["career-tuner", "spring-api", "schema"]),
     n("product-structure", "PRODUCT_STRUCTURE.md", "docs", "canon", 20, "사용자 관점 메뉴와 기능 구조를 정리한 문서입니다.", ["지원 건, 대시보드, AI 면접, 첨삭, 커뮤니티, 결제 구조를 설명합니다."], "docs/PRODUCT_STRUCTURE.md", ["application-case", "dashboard", "interview-prep"]),
@@ -128,9 +128,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
     n("wiki-schema", "Wiki Schema", "wiki", "governance", 19, "Agent의 page class, provenance, cross-link, ingest/query/lint 완료 조건을 정의합니다.", ["한 source의 영향을 여러 page에 통합합니다.", "Page 수가 아니라 근거와 재사용 가능한 연결을 우선합니다."], "docs/obsidian-vault/wiki/systems/wiki-schema.md", ["llm-wiki-architecture", "source-provenance", "llm-wiki-ingest", "llm-wiki-query", "llm-wiki-lint"]),
     n("source-provenance", "Source Provenance", "wiki", "policy", 17, "각 synthesis를 source_count와 source path로 raw 근거까지 추적합니다.", ["공개본에는 검토된 source label과 공개 URL만 표시합니다."], "docs/obsidian-vault/wiki/systems/wiki-schema.md", ["wiki-schema", "raw-sources", "public-export"]),
     n("compounding-knowledge", "Compounding Knowledge", "wiki", "concept", 20, "이미 발견한 연결과 비교를 다음 작업의 출발점으로 남겨 탐색 비용을 누적 절감합니다.", ["Chat에 머물던 결과를 canonical page로 승격합니다.", "Memex의 associative trail을 Wiki link와 graph edge로 구현합니다."], "docs/obsidian-vault/wiki/concepts/compounding-knowledge.md", ["llm-wiki", "llm-wiki-query", "human-review"]),
-    n("graphify-extract", "Graphify Extract Result", "wiki", "graphify", 28, "실제 Graphify code-only AST 추출 결과입니다. 전체 repo 기준 2,870 code files, 26,886 nodes, 91,616 edges를 생성했습니다.", ["API 키 없이 AST 기반으로 실행했습니다.", "backend/frontend/ml 별도 추출 수치를 공개 화면에 반영했습니다.", "원본 graph의 절대경로는 공개하지 않고 repo-relative 요약만 사용합니다."], "TEMP/careertuner-graphify-public/graphify-out/graph.json", ["backend-graph", "frontend-graph", "ml-graph", "graph-report", "code-map"]),
-    n("backend-graph", "Backend Graphify Scope", "wiki", "graphify-scope", 20, "backend 범위 code-only 추출: 1,787 files, 13,548 nodes, 47,689 edges.", ["calls 14,098, references 12,543, imports 12,217를 확인했습니다."], "TEMP/ct-graphify-backend/graphify-out/graph.json", ["spring-api", "mybatis"]),
-    n("frontend-graph", "Frontend Graphify Scope", "wiki", "graphify-scope", 20, "frontend/src 범위 code-only 추출: 571 files, 4,448 nodes, 13,356 edges.", ["contains 3,821, imports 3,701, calls 2,829를 확인했습니다."], "TEMP/ct-graphify-frontend-src/graphify-out/graph.json", ["react-spa", "mock-registry"]),
+    n("graphify-extract", "Graphify Extract Result", "wiki", "graphify", 28, "실제 Graphify code-only AST 추출 결과입니다. 전체 repo 기준 2,870 code files, 26,886 nodes, 91,616 edges를 생성했습니다.", ["API 키 없이 AST 기반으로 실행했습니다.", "backend/frontend/ml 별도 추출 수치를 공개 화면에 반영했습니다.", "원본 graph의 절대경로는 공개하지 않고 공개 graph data 경로와 요약만 사용합니다."], "Obsidian/SecondBrain/graph-data.js", ["backend-graph", "frontend-graph", "ml-graph", "graph-report", "code-map"]),
+    n("backend-graph", "Backend Graphify Scope", "wiki", "graphify-scope", 20, "backend 범위 code-only 추출: 1,787 files, 13,548 nodes, 47,689 edges.", ["calls 14,098, references 12,543, imports 12,217를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["spring-api", "mybatis"]),
+    n("frontend-graph", "Frontend Graphify Scope", "wiki", "graphify-scope", 20, "frontend/src 범위 code-only 추출: 571 files, 4,448 nodes, 13,356 edges.", ["contains 3,821, imports 3,701, calls 2,829를 확인했습니다."], "Obsidian/SecondBrain/graph-data.js", ["react-spa", "mock-registry"]),
     n("graph-report", "GRAPH_REPORT.md", "wiki", "report", 18, "Graphify hub, bridge, surprising link, agent 시작 prompt를 요약한 report입니다.", ["실제 code-only 결과와 curated wiki report를 함께 사용합니다."], "docs/obsidian-vault/graphify-out/GRAPH_REPORT.md", ["graphify-extract", "agent-ladder"]),
     n("agent-ladder", "3-layer Query Rule", "wiki", "protocol", 22, "Graph query → Obsidian wiki search → raw/source reading 순서로 agent 탐색 비용을 줄입니다.", ["코드를 덜 읽는 것이 아니라 읽을 코드를 빠르게 좁히는 전략입니다."], "docs/obsidian-vault/wiki/systems/agent-memory-protocol.md", ["wiki-index", "graph-report", "code-map", "llm-wiki-query", "wiki-search-tooling"]),
     n("ingest-query-lint", "Ingest / Query / Lint", "wiki", "operation", 20, "Source 통합, 검증된 질문, 결과 승격과 knowledge health check를 연결합니다.", ["Wiki를 살아있는 지식 베이스로 유지하고 다음 agent의 반복 분석을 줄입니다."], "docs/obsidian-vault/wiki/operations/ingest-query-lint.md", ["wiki-log", "llm-wiki", "llm-wiki-ingest", "llm-wiki-query", "llm-wiki-lint"]),
@@ -146,7 +146,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
   ];
 
   const highlights = [
-    h("시연 준비 경계", "최신 source, Obsidian synthesis, vault merge와 과거 full execution baseline을 분리해 검증 범위를 과장하지 않습니다.", "d00a57fc source"),
+    h("시연 준비 경계", "최신 source, Obsidian synthesis, synthesis merge, latest projection merge와 과거 full execution baseline을 분리해 검증 범위를 과장하지 않습니다.", "d00a57fc source"),
     h("Graphify 실제 추출", "API 키 없이 code-only AST 추출을 실행해 전체 repo에서 26,886 nodes / 91,616 edges를 확인했습니다.", "2,870 code files"),
     h("백엔드 구현 밀도", "Spring Boot 4.1, Java 21, MyBatis 기반 backend만 별도 추출해 13,548 nodes / 47,689 edges가 나왔습니다.", "1,787 files"),
     h("프런트/관리자 표면", "React SPA의 사용자/관리자 화면과 mock registry를 frontend/src 단위로 추출했습니다.", "4,448 nodes"),
@@ -203,7 +203,7 @@ window.SECOND_BRAIN_GRAPH = (() => {
     code("Mock Registry", "웹 데모/APK를 백엔드 없이 자체완결로 실행하는 핵심 프런트 장치입니다.", "frontend/src/app/lib/mock", ["Frontend", "Demo"]),
     code("Admin Routes", "사용자 기능과 짝을 이루는 관리자 콘솔 라우팅 표면입니다.", "frontend/src/admin/routes.ts", ["Frontend", "Admin"]),
     code("Job Posting Worker", "문서 추출, OCR smoke, Docker smoke, release readiness 검사를 가진 Python worker입니다.", "ml/job-posting-worker/README.md", ["ML", "Worker"]),
-    code("Career Strategy Reports", "RAG hardcase, evidence gate, semantic judge 등 C 모델 개선 이력이 누적됩니다.", "docs/ai-reports/areas/c-career-strategy/reports", ["ML", "Docs"]),
+    code("Career Strategy Reports", "RAG hardcase, evidence gate, semantic judge 등 C 모델 개선 이력이 누적됩니다.", privateEvidence("private evidence (not published): AI evaluation reports"), ["ML", "Docs"]),
   ];
 
   const sources = [
@@ -222,7 +222,8 @@ window.SECOND_BRAIN_GRAPH = (() => {
       graphifyExtracted: true,
       latestSourceSha: "d00a57fc8d1e3499ba6c23acec498c47ac0d5d4c",
       synthesisSourceSha: "2c4b11a9b39d2bc34343797887722616091203e3",
-      vaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      synthesisVaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      latestProjectionMergeSha: "248e082b0ccf4f17e39a7cdc3728b1a8fe2ee3ec",
       executionBaselineSha: "30a5511a13a6a304fdf13231bfea1afe7a335c2e",
     },
     groups,
@@ -234,8 +235,9 @@ window.SECOND_BRAIN_GRAPH = (() => {
     sources,
   };
 
-  function n(id, label, group, type, weight, summary, points, path, links) {
-    return { id, label, group, type, weight, summary, points, path, links };
+  function n(id, label, group, type, weight, summary, points, evidenceValue, links) {
+    const evidence = normalizeEvidence(evidenceValue);
+    return { id, label, group, type, weight, summary, points, path: evidence.path, evidence, links };
   }
 
   function h(title, summary, metric) {
@@ -250,8 +252,27 @@ window.SECOND_BRAIN_GRAPH = (() => {
     return { title, summary, path, wikiId };
   }
 
-  function code(title, summary, path, tags) {
-    return { title, summary, path, tags };
+  function code(title, summary, evidenceValue, tags) {
+    const evidence = normalizeEvidence(evidenceValue);
+    return { title, summary, path: evidence.path, evidence, tags };
+  }
+
+  function privateEvidence(label) {
+    return { visibility: "private", label, path: "" };
+  }
+
+  function normalizeEvidence(value) {
+    if (typeof value === "string") {
+      return { visibility: "public", label: "published evidence", path: value };
+    }
+    if (value && typeof value === "object") {
+      return {
+        visibility: value.visibility || "public",
+        label: value.label || "published evidence",
+        path: value.path || "",
+      };
+    }
+    return { visibility: "unrecorded", label: "evidence not recorded", path: "" };
   }
 
   function source(title, summary, href) {
