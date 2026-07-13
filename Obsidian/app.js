@@ -166,16 +166,16 @@ const nodes = [
     "사용자 기능과 관리자 기능을 같은 릴리스 기준으로 봅니다.",
     "타인 담당 폴더 수정 시 충돌 위험을 먼저 봅니다.",
   ], ["admin-ui", "ownership", "common-areas"]),
-  node("admin-ui", "관리자 화면", "frontend", "admin", 18, "사용자 기능의 운영·검토·검색·메모·상태 변경을 담당하는 관리자 UI/API 축입니다.", [
-    "별도 앱이 아니라 같은 Vite React 앱의 src/admin 아래에 둡니다.",
-    "사용자 기능 완료 기준에는 관련 관리자 화면/API가 포함됩니다.",
-    "분석 로그, 지원 건 상태, 첨삭 이력, 크레딧 조정 등이 연결됩니다.",
-  ], ["admin-dashboard", "admin-fit-analysis", "admin-correction", "spring-api", "feature-modules"]),
-  node("mock-registry", "Mock Registry", "frontend", "demo", 18, "백엔드 없이 데모와 APK를 자체완결로 실행하게 하는 mock API registry입니다.", [
-    "데모 미제공 엔드포인트는 안내 메시지로 처리합니다.",
-    "사용자 앱과 관리자 콘솔 전 도메인을 mock으로 채우는 방향입니다.",
-    "공개 Pages와 모바일 APK가 같은 mock 빌드를 공유합니다.",
-  ], ["mock-demo-build", "demo-pages", "android-apk", "admin-ui"]),
+  node("admin-ui", "관리자 화면", "frontend", "admin", 18, "29개 세부 권한에 따라 route·navigation·action을 제어하는 사용자 기능의 운영 표면입니다.", [
+    "읽기 권한이 없으면 domain tab과 사용자 상세의 관리자 option을 노출하지 않습니다.",
+    "권한 확인 전 route module을 import하지 않고 조회 실패도 fail-closed합니다.",
+    "PR #408은 AI 상담 공백 사유를 실제 점수·임계값 관계에 맞게 분리했습니다.",
+  ], ["admin-dashboard", "admin-fit-analysis", "admin-correction", "spring-api", "feature-modules", "admin-permission-boundary"]),
+  node("mock-registry", "Mock Registry", "frontend", "demo", 18, "정적 체험과 장애 시 read-only fallback을 위한 API registry입니다.", [
+    "정적 mock build와 AWS-first outage mode는 서로 다른 계약입니다.",
+    "일반 Sites build는 실제 API를 먼저 사용합니다.",
+    "미등록 endpoint와 권한 없는 mutation은 명시적으로 실패합니다.",
+  ], ["mock-demo-build", "demo-pages", "android-apk", "admin-ui", "outage-demo-fallback"]),
   node("pwa", "PWA", "frontend", "mobile", 17, "manifest, service worker, 오프라인 셸을 통해 웹을 앱처럼 설치하는 모바일/데스크톱 경험입니다.", [
     "캐시는 정적 리소스와 공개 정보 중심으로 제한합니다.",
     "개인·민감 데이터는 장기 캐시하지 않는 원칙입니다.",
@@ -227,11 +227,11 @@ const nodes = [
     "공통 web 패키지에 속합니다.",
     "공통 API 계약 변경은 팀 합의 대상입니다.",
   ], ["spring-api", "common-areas", "frontend-ci"]),
-  node("security", "인증/권한", "backend", "security", 17, "JWT/stateless 보안, 공개 엔드포인트, 관리자 권한을 관리하는 공통 보안 축입니다.", [
-    "사용자 API와 관리자 API 접근 권한을 구분합니다.",
-    "OAuth provider는 환경값과 실제 provider 설정을 분리합니다.",
-    "보안 설정 변경은 영향 범위가 커서 공통 영역으로 취급합니다.",
-  ], ["jwt", "admin-ui", "common-areas"]),
+  node("security", "인증/권한", "backend", "security", 17, "JWT/stateless 보안, 29-code 관리자 권한, Firebase phone과 native OAuth trust boundary를 관리합니다.", [
+    "익명·일반 회원과 권한 조회 실패를 frontend/backend 양쪽에서 fail-closed합니다.",
+    "Firebase 공개 web config와 server service-account secret을 구분합니다.",
+    "Native OAuth는 PKCE와 exact verified link, one-time handoff를 사용합니다.",
+  ], ["jwt", "admin-ui", "common-areas", "admin-permission-boundary", "firebase-phone-trust", "native-auth-handoff"]),
   node("jwt", "JWT", "backend", "security", 14, "이메일 로그인과 API 인증에 쓰이는 stateless 토큰 기반 인증 방식입니다.", [
     "Bearer 인증으로 사용자와 관리자 API를 보호합니다.",
     "토큰 재발급과 로그아웃 흐름이 인증 영역에 포함됩니다.",
@@ -278,11 +278,11 @@ const nodes = [
     "provider 선택 지점은 한 곳이어야 합니다.",
     "비용 절감, 시연 안정성, 포트폴리오 증거 확보와 연결됩니다.",
   ], ["fallback", "openai-provider", "ollama", "mock-provider", "common-areas"]),
-  node("fallback", "Fallback", "ai", "runtime", 18, "자체 모델 실패나 미구현 시 Claude/OpenAI/규칙/Mock 등으로 완주성을 확보하는 실행 정책입니다.", [
-    "CI와 데모 환경에서 안정성을 높입니다.",
-    "도메인별 JSON schema 검증과 함께 쓰입니다.",
-    "사용자에게 실패 대신 가능한 범위의 결과를 제공합니다.",
-  ], ["provider-dispatcher", "mock-provider", "json-schema", "ai-usage-log"]),
+  node("fallback", "Fallback", "ai", "runtime", 18, "도메인이 명시적으로 허용한 provider retry·degrade만 수행하고 미허용 실패는 그대로 드러내는 실행 정책입니다.", [
+    "정적 demo mock과 AI semantic fallback을 같은 성공으로 보지 않습니다.",
+    "JSON schema parse나 낮은 loss만으로 model 품질을 판정하지 않습니다.",
+    "E 최신 비교 실패처럼 완주하지 못한 run은 미검증 상태로 기록합니다.",
+  ], ["provider-dispatcher", "mock-provider", "json-schema", "ai-usage-log", "model-evidence"]),
   node("openai-provider", "OpenAI Provider", "ai", "runtime", 16, "구조화 분석과 fallback 경로에서 사용할 수 있는 외부 AI provider입니다.", [
     "API 키는 환경변수로만 주입하고 공개하지 않습니다.",
     "공개 지식맵에는 provider 개념만 노출합니다.",
@@ -395,16 +395,16 @@ const nodes = [
     "AI 결과 schema와 맞물립니다.",
   ], ["mysql", "fit-analysis-table", "json-schema"]),
 
-  node("release-matrix", "릴리즈 매트릭스", "release", "overview", 20, "웹 데모, Android APK, iOS, 데스크톱 zip/installer/portable 산출물을 함께 관리하는 릴리즈 축입니다.", [
+  node("release-matrix", "릴리즈 매트릭스", "release", "overview", 20, "웹 데모, Android, iOS와 Qt desktop 산출물의 source·실행·live gate를 함께 관리하는 릴리즈 축입니다.", [
     "발표/심사 전 산출물 종류와 실행 경로를 먼저 확인합니다.",
     "태그 기반 모바일/데스크톱 release workflow와 연결됩니다.",
     "공개 데모는 Pages에, 앱 산출물은 GitHub Release에 올리는 구조입니다.",
-  ], ["demo-pages", "android-apk", "ios-build", "desktop-zip", "installer", "portable-exe"]),
-  node("demo-pages", "GitHub Pages Demo", "release", "web", 18, "CareerTunerDemo 공개 repo에서 백엔드 없이 체험 가능한 정적 웹 데모입니다.", [
-    "dev 머지 시 sanitized build 산출물을 공개 repo로 배포합니다.",
+  ], ["demo-pages", "android-apk", "ios-build", "desktop-zip", "installer", "portable-exe", "cross-platform-integration"]),
+  node("demo-pages", "GitHub Pages Demo", "release", "web", 18, "CareerTunerDemo 공개 repo에서 정적 mock 또는 AWS-first 장애 demo를 체험하는 웹 채널입니다.", [
+    "정상 상태에서는 AWS API가 먼저이며 실제 readiness 장애에서만 read-only mock으로 전환합니다.",
     "이 Obsidian 공개 지식맵도 /Obsidian/ 하위에 보존됩니다.",
     "SPA fallback과 base path 설정이 필요합니다.",
-  ], ["mock-demo-build", "secret-scan", "vite", "public-knowledge-map"]),
+  ], ["mock-demo-build", "secret-scan", "vite", "public-knowledge-map", "outage-demo-fallback"]),
   node("mock-demo-build", "Mock 데모 빌드", "release", "demo", 18, "VITE_USE_MOCK=true 기반으로 서버 없이 웹 데모와 APK를 자체완결로 실행하는 빌드입니다.", [
     "로그인에 아무 값이나 입력하면 데모 계정으로 진입합니다.",
     "등록되지 않은 endpoint는 데모 미제공 안내로 처리합니다.",
@@ -438,7 +438,7 @@ const nodes = [
   node("portable-exe", "포터블 단일 exe", "release", "desktop", 16, "다운로드 파일 1개, 설치 없음 경험을 목표로 하는 데스크톱 배포 형태입니다.", [
     "Qt DLL/plugin을 순수 정적 단일 exe로 묶는 방식은 현재 kit에서는 현실적이지 않습니다.",
     "대신 exe가 런타임을 풀고 실행하며 exe 옆 데이터 폴더를 우선 사용합니다.",
-    "읽기 전용 위치에서는 LOCALAPPDATA 폴백을 사용합니다.",
+    "읽기 전용 위치에서는 OS 사용자 데이터 경로 폴백을 사용합니다.",
   ], ["desktop-readme", "installer", "release-matrix"]),
   node("github-actions", "GitHub Actions", "release", "ci", 17, "웹 데모, Android, iOS, desktop, backend/frontend CI를 자동화하는 workflow 축입니다.", [
     "데모 배포는 CareerTunerDemo repo를 별도로 checkout해 갱신합니다.",
@@ -567,6 +567,46 @@ const nodes = [
     "E 영역 첨삭 운영 상태를 확인합니다.",
     "관리자 기능 완료 기준의 대표 예입니다.",
   ], ["correction", "correction-request", "admin-completion"]),
+  node("admin-permission-boundary", "29-code 관리자 권한", "backend", "security", 20, "8개 domain의 CRUD/READ 권한을 route, menu, action과 backend declaration에 함께 적용합니다.", [
+    "7개 CRUD domain 28개와 AUDIT_READ를 합쳐 29개 code입니다.",
+    "일반 ADMIN은 ADMIN_PERMISSION 계열을 위임받지 못하고 SUPER_ADMIN만 우회합니다.",
+    "익명·일반 회원·조회 실패·선언 누락을 fail-closed합니다.",
+  ], ["admin-ui", "security", "admin-completion", "demo-readiness-ledger"]),
+  node("firebase-phone-trust", "Firebase 전화 인증", "backend", "identity", 17, "Client SMS/reCAPTCHA와 backend ID-token 검증을 분리한 phone identity 경계입니다.", [
+    "Frontend는 named app lazy init과 E.164 정규화를 사용합니다.",
+    "Backend는 revoked token과 phone_number claim을 검증합니다.",
+    "공개 web config는 service-account secret이나 live 준비 증거가 아닙니다.",
+  ], ["security", "native-auth-handoff", "demo-readiness-ledger"]),
+  node("native-auth-handoff", "Native OAuth Handoff", "frontend", "identity", 19, "Capacitor OAuth를 PKCE와 one-time hashed handoff로 app에 되돌리는 경계입니다.", [
+    "Verifier는 app storage에 10분, handoff code는 server에서 3분만 유효합니다.",
+    "Token과 verifier 원문은 handoff table에 저장하지 않습니다.",
+    "공식 provider HTTPS URL과 exact verified App/Universal Link만 허용합니다.",
+  ], ["security", "capacitor", "firebase-phone-trust", "cross-platform-integration"]),
+  node("lifecycle-integrity", "수명주기 무결성", "data", "integrity", 20, "Profile snapshot, 탈퇴 비식별화, soft delete, idempotency와 고아 data 방지를 교차 도메인에서 연결합니다.", [
+    "Interview operation key와 client submission ID가 AI 사용량·평가·정산 중복을 막습니다.",
+    "Voice/nonverbal result를 session·question·answer에 연결합니다.",
+    "Notification destination은 ALL/WEB/MOBILE/DESKTOP으로 분리합니다.",
+  ], ["user-profile-version", "application-case", "soft-delete", "interview-session", "correction-request", "cross-platform-integration"]),
+  node("outage-demo-fallback", "AWS-first 장애 데모", "release", "resilience", 20, "정상 시 AWS API를 먼저 쓰고 readiness가 확인된 장애에서만 read-only mock으로 전환합니다.", [
+    "Network/502/503/504만 장애 후보이며 upstream readiness와 DB DOWN을 추가 확인합니다.",
+    "Constraint·bad SQL·application bug는 500으로 남겨 mock 성공으로 숨기지 않습니다.",
+    "Outage mode는 저장되지 않음을 표시하고 OAuth·결제를 차단한 뒤 복구 시 reload합니다.",
+  ], ["demo-pages", "mock-registry", "demo-readiness-ledger"]),
+  node("model-evidence", "A-F 모델 증거", "ai", "verification", 21, "Fine-tuning, self-hosted integration, PoC와 미검증 provenance를 영역별 artifact 수준으로 구분합니다.", [
+    "A~E는 서로 다른 LoRA/QLoRA·multimodal evidence와 남은 artifact gap이 있습니다.",
+    "F careertuner-mod는 provenance가 없어 검증된 fine-tune 성과에서 제외합니다.",
+    "C/D/E Qwen2.5-3B는 상업 배포 전 license gate가 필요합니다.",
+  ], ["lora-qlora", "career-strategy-llm", "correction-llm", "interview-llm", "ai-reports", "demo-readiness-ledger"]),
+  node("cross-platform-integration", "3개 플랫폼 연동", "release", "verification", 21, "Web·Android·iOS·Qt desktop의 공통 API와 platform별 인증·알림·handoff gate를 분리합니다.", [
+    "Android signed App Link와 Qt package smoke는 PR #395 실행 원장에 PASS가 있습니다.",
+    "iOS는 unsigned source/CI와 signed-device Universal Link gate를 구분합니다.",
+    "Server-side prep job/device persistence는 미구현으로 명시합니다.",
+  ], ["release-matrix", "android-apk", "ios-build", "desktop-zip", "native-auth-handoff", "lifecycle-integrity", "demo-readiness-ledger"]),
+  node("demo-readiness-ledger", "시연 준비 원장", "governance", "verification", 22, "Source review, 실행 증거, targeted delta와 외부 live gate를 서로 다른 기준으로 기록합니다.", [
+    "최신 source d00a57fc, synthesis 2c4b11a9, vault merge 114b6d91을 구분합니다.",
+    "Full execution evidence는 PR #395의 30a5511a이며 최신 head 전체 rerun으로 과장하지 않습니다.",
+    "PR #408 관리자 문구와 PR #409 community desktop 폭은 다음 candidate의 targeted UI gate입니다.",
+  ], ["release-matrix", "admin-permission-boundary", "firebase-phone-trust", "outage-demo-fallback", "model-evidence", "cross-platform-integration"]),
 ];
 
 const pinnedPositions = {

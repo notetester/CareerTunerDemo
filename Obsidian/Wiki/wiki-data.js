@@ -23,7 +23,7 @@ window.CAREERTUNER_WIKI = (() => {
       "index",
       "Wiki Index",
       "start",
-      "CareerTuner의 제품·기능·코드·AI/ML·배포를 읽는 프로젝트 Wiki입니다. Curated article과 110개 graph evidence를 같은 검색에서 탐색합니다.",
+      "CareerTuner의 제품·기능·코드·AI/ML·배포를 읽는 프로젝트 Wiki입니다. Curated article과 {{evidence}}개 graph evidence를 같은 검색에서 탐색합니다.",
       ["wiki-index", "second-brain", "portfolio"],
       ["systems/careertuner-second-brain", "systems/agent-memory-protocol", "graph-report"],
       [
@@ -34,8 +34,8 @@ window.CAREERTUNER_WIKI = (() => {
             ["계층", "역할", "공개 화면"],
             [
               ["raw", "원문과 외부 source를 보관하는 private 입력 계층", "직접 공개하지 않음"],
-              ["project wiki", "제품·기능·API·데이터·AI/ML·배포의 실제 합성 지식", "13개 curated project article"],
-              ["evidence wiki", "Graph node별 summary, 구현 point, source path와 연결", "110개 searchable evidence page"],
+              ["project wiki", "제품·기능·API·데이터·AI/ML·배포의 실제 합성 지식", "{{project}}개 curated project article"],
+              ["evidence wiki", "Graph node별 summary, 구현 point, source path와 연결", "{{evidence}}개 searchable evidence page"],
               ["graphify-out", "관계 graph, report, query data", "Second Brain graph와 Wiki evidence"],
               ["source", "제품 코드와 정본 문서", "코드 경로와 구조만 공개"],
             ],
@@ -45,9 +45,9 @@ window.CAREERTUNER_WIKI = (() => {
           table(
             ["자료", "수량", "내용"],
             [
-              ["Curated Wiki", "34 pages", "Project article, second-brain system, concept, operation과 history"],
-              ["Graph evidence", "110 pages", "제품·backend·frontend·admin·AI/ML·data·release·docs node"],
-              ["Total", "144 pages", "검색 가능한 project knowledge와 source path"],
+              ["Curated Wiki", "{{curated}} pages", "Project article, second-brain system, concept, operation과 history"],
+              ["Graph evidence", "{{evidence}} pages", "제품·backend·frontend·admin·AI/ML·data·release·docs node"],
+              ["Total", "{{total}} pages", "검색 가능한 project knowledge와 source path"],
               ["Graphify snapshot", "26,886 nodes / 91,616 edges", "2,870 code files의 code-only extraction"],
             ],
           ),
@@ -65,9 +65,10 @@ window.CAREERTUNER_WIKI = (() => {
             ["ai-ml/model-portfolio", "A~F 자체 모델과 artifact boundary"],
             ["delivery/mobile-desktop", "PWA, Android, iOS와 Qt desktop package"],
             ["delivery/release-demo", "CI gate, sanitized Pages와 release channel"],
+            ["project/readiness-refresh", "Admin/auth/data/outage/A~F/platform gate와 최신 UI delta"],
             ["governance/repository-boundaries", "Main/submodule/Demo 저장 책임"],
             ["governance/team-ownership", "A~F vertical ownership와 common boundary"],
-            ["evidence/catalog", "110개 code/document evidence를 group별로 탐색"],
+            ["evidence/catalog", "{{evidence}}개 code/document evidence를 group별로 탐색"],
           ),
         ),
         section("systems", "Systems",
@@ -144,6 +145,18 @@ window.CAREERTUNER_WIKI = (() => {
             "Graphify 산출물에는 source entity와 로컬 경로가 섞일 수 있으므로 원본 graph를 그대로 공개하지 않습니다.",
           ),
           callout("Graph는 정본이 아닙니다", "graph와 wiki는 탐색 범위를 좁히는 계층입니다. 현재 구현 상태는 런타임 source와 모듈 README를 최종 기준으로 확인합니다.", "warning"),
+        ),
+        section("freshness", "검증 기준의 분리",
+          table(
+            ["기준", "SHA", "의미"],
+            [
+              ["Latest product source", "d00a57fc", "PR #408/#409까지 포함한 현재 공개 source review"],
+              ["Obsidian synthesis baseline", "2c4b11a9", "Admin/auth/data/outage/A~F/platform을 전면 합성한 code 기준"],
+              ["Obsidian vault merge", "114b6d91", "위 synthesis가 vault main에 병합된 commit"],
+              ["Full execution evidence", "30a5511a", "PR #395의 backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
+            ],
+          ),
+          callout("최신 source review와 full rerun은 다릅니다", "d00a57fc의 두 UI 변경은 source diff로 대조했으며 최신 head 전체 suite를 다시 실행했다고 기록하지 않습니다.", "warning"),
         ),
         section("start", "Agent Starting Order",
           steps(
@@ -280,8 +293,27 @@ window.CAREERTUNER_WIKI = (() => {
             "같은 React app의 `/admin/**`와 `src/admin/features`에서 공통 인증·design system을 공유합니다.",
           ),
         ),
+        section("permission", "Granular Admin Authorization",
+          paragraph("관리자 권한은 USER, SECURITY, BILLING, CONTENT, AI, POLICY, ADMIN_PERMISSION의 CRUD 28개와 AUDIT_READ를 합친 29개 code입니다. 일반 ADMIN에게 ADMIN_PERMISSION 계열을 위임하지 않으며 SUPER_ADMIN만 세부 권한을 우회합니다."),
+          list(
+            "읽기 권한이 없는 domain은 route, navigation과 사용자 상세의 관리자 option에서 노출하지 않습니다.",
+            "권한 확인 전 route module을 lazy import하지 않고 익명·일반 회원·조회 실패를 fail-closed합니다.",
+            "Backend는 class READ와 method mutation 선언을 함께 검사하고 선언되지 않은 일반 관리자 API도 거부합니다.",
+            "Mock mutation도 실제 권한 code와 정확히 일치해야 하며 frontend 표시는 최종 보안 권위가 아닙니다.",
+          ),
+        ),
+        section("latest-ui", "Latest Source UI Delta",
+          table(
+            ["PR", "변경", "영향"],
+            [
+              ["#408", "AI 상담 공백 사유를 점수·임계값 관계에 따라 분리", "임계값 초과 후 상담 route가 선택된 사례를 근거 부족으로 오해하지 않음"],
+              ["#409", "커뮤니티 글쓰기·스크랩 상세 desktop width 보정", "Mobile padding을 유지하면서 desktop의 fit-content 수축을 해소"],
+            ],
+          ),
+          paragraph("두 변경은 d00a57fc까지 source diff로 확인했으며 API·권한·저장 계약을 바꾸지 않습니다. 최신 candidate에서는 이 두 path의 관리자 문구와 desktop/mobile responsive smoke를 선택합니다."),
+        ),
         section("mock", "Interactive Mock Portfolio",
-          paragraph("Public Pages와 APK는 API method/path matcher와 domain handler로 user/admin flow를 재현합니다. 등록되지 않은 endpoint만 명시적 demo limitation으로 처리해 screenshot이 아니라 클릭 가능한 product evidence를 제공합니다."),
+          paragraph("정적 mock build는 API method/path matcher와 domain handler로 user/admin flow를 재현합니다. 운영 장애 fallback은 별도 mode이며 AWS readiness가 확인된 장애에서만 read-only data로 전환합니다."),
         ),
       ],
     ),
@@ -303,6 +335,7 @@ window.CAREERTUNER_WIKI = (() => {
           list(
             "모든 endpoint는 `/api/**`, response는 `ApiResponse<T>`입니다.",
             "JWT/stateless SecurityConfig가 public endpoint 외 인증, CORS와 SSE dispatch를 관리합니다.",
+            "AdminPermissionInterceptor가 class READ와 method mutation 선언을 확인하며 일반 ADMIN의 미선언 API를 fail-closed합니다.",
             "Global exception, ErrorCode와 OpenAPI config를 공통 영역에 둡니다.",
             "Jackson 3 injection과 단일 `@Primary` provider를 convention test로 고정합니다.",
           ),
@@ -321,6 +354,19 @@ window.CAREERTUNER_WIKI = (() => {
         ),
         section("provider", "AI Provider Boundary",
           paragraph("Domain AI service는 자기 package에 두고 caller는 primary dispatcher 하나를 주입받습니다. Self/local, external API와 deterministic fallback 순서를 한곳에서 결정하고 schema·grounding validator를 통과한 result만 저장합니다."),
+        ),
+        section("identity", "Identity Trust Boundaries",
+          table(
+            ["Flow", "Server trust boundary"],
+            [
+              ["Firebase phone", "Admin SDK가 revoked ID token과 phone_number claim을 검증; 공개 web config를 service-account secret으로 취급하지 않음"],
+              ["Native OAuth", "PKCE challenge와 3분 one-time hashed handoff; token·verifier 원문은 handoff table에 저장하지 않음"],
+              ["Deep link", "공식 provider HTTPS URL과 exact verified App/Universal Link host/path만 허용"],
+            ],
+          ),
+        ),
+        section("readiness", "Health and Error Semantics",
+          paragraph("Backup health는 process 생존만 보지 않고 upstream readiness와 DB를 확인합니다. DB connection/resource failure만 503으로 분류하고 constraint, bad SQL과 일반 application error는 500으로 남겨 code defect가 장애 mock으로 숨겨지지 않게 합니다."),
         ),
         section("runtime", "Runtime Profiles",
           paragraph("Local, tailscale, aws와 domain profile은 host set을 전환하고 environment variable이 우선합니다. Public Wiki에는 변수명과 architecture만 공개하며 credential·private endpoint 값은 제외합니다."),
@@ -345,14 +391,29 @@ window.CAREERTUNER_WIKI = (() => {
         ),
         section("mock", "Mock Registry",
           list(
-            "`VITE_USE_MOCK=true`에서 backend 없이 동일 API surface를 처리합니다.",
+            "`VITE_USE_MOCK=true` 정적 build에서 backend 없이 동일 API surface를 처리합니다.",
             "Method/path matcher와 domain handler가 user/admin data를 함께 제공합니다.",
             "미등록 endpoint는 잘못된 generic success 대신 명시적 demo limitation을 반환합니다.",
-            "Pages, APK와 iOS simulator가 같은 mock build를 사용합니다.",
+            "AWS-first outage build와 정적 mock build는 서로 다른 runtime mode입니다.",
+          ),
+        ),
+        section("outage", "Real-first Outage Fallback",
+          paragraph("일반 Sites build는 실제 API를 먼저 사용합니다. Network error 또는 502/503/504가 발생해도 즉시 mock으로 가지 않고 backup health가 upstream readiness와 DB DOWN을 확인한 뒤에만 read-only outage mode로 전환합니다."),
+          list(
+            "저장되지 않는 mode임을 banner로 표시합니다.",
+            "Social OAuth는 중지하고 Sites payment는 항상 차단합니다.",
+            "online/focus와 recovery polling이 readiness 복구를 확인하면 real mode로 reload합니다.",
+          ),
+        ),
+        section("identity", "Phone and Native Identity",
+          list(
+            "Firebase phone UI는 named app lazy init, invisible reCAPTCHA와 E.164 정규화를 사용하고 ID token만 backend로 보냅니다.",
+            "Native social OAuth는 PKCE verifier를 app storage에 10분만 보관하고 one-time handoff code로 돌아옵니다.",
+            "Callback은 canonical host, exact path, 43-character code와 허용 query만 받습니다.",
           ),
         ),
         section("responsive", "Responsive and PWA",
-          paragraph("Dense desktop workspace는 mobile drawer, tabs, accordion과 single column으로 접습니다. PWA cache는 static/public asset 중심이고 profile, 지원 건, AI result, interview, correction과 payment는 server-first로 처리합니다."),
+          paragraph("Dense desktop workspace는 mobile drawer, tabs, accordion과 single column으로 접습니다. PR #409는 커뮤니티 글쓰기·스크랩 상세의 desktop fit-content 수축을 width와 breakpoint padding으로 보정했습니다. PWA cache는 static/public asset 중심이고 profile, 지원 건, AI result, interview, correction과 payment는 server-first로 처리합니다."),
         ),
         section("signals", "Current Implementation Signals",
           list(
@@ -392,6 +453,20 @@ window.CAREERTUNER_WIKI = (() => {
             ],
           ),
         ),
+        section("integrity", "Cross-domain Integrity",
+          list(
+            "Profile save는 immutable version snapshot을 만들고 A 분석과 downstream result가 실제 입력 version을 가리킵니다.",
+            "Account deletion은 인증 식별자와 개인정보를 비식별화하면서 public content와 audit FK graph를 보존합니다.",
+            "C todo는 tombstone을, E correction은 source snapshot·soft delete·탈퇴 비식별화를 보존합니다.",
+            "F relation/reaction은 해제 시각을 남기고 재수락·재선택 때 동일 row를 활성화하며 cached count를 active row로 대사합니다.",
+          ),
+        ),
+        section("idempotency", "AI and Media Idempotency",
+          paragraph("Interview question regeneration/follow-up은 operation key, answer submit은 client submission ID로 model usage·평가·정산 중복을 막습니다. Voice/nonverbal result는 session뿐 아니라 question/answer에 연결하고 불일치·고아 reference와 answer/kind 중복을 정리합니다."),
+        ),
+        section("platform-data", "Platform-aware Notification",
+          paragraph("Notification destination은 ALL/WEB/MOBILE/DESKTOP으로 나뉩니다. 같은 계정의 웹, 모바일과 데스크톱 client가 서로 전용 event를 잘못 소비하지 않도록 mapper와 delivery predicate가 destination을 유지합니다."),
+        ),
         section("billing", "Billing and Policy History",
           paragraph("Plan policy, benefit balance와 transaction ledger를 분리합니다. Charge preview는 cost range와 refund policy를 사전 고지하고 action key로 실제 차감과 연결합니다. Payment에는 당시 policy snapshot, refund request에는 사용 이력과 판정 근거를 남깁니다."),
         ),
@@ -418,9 +493,10 @@ window.CAREERTUNER_WIKI = (() => {
           steps(
             "Self/local model이 준비되고 quality gate를 통과하면 우선 사용합니다.",
             "External provider로 제한된 retry/degrade를 수행합니다.",
-            "Schema·grounding 실패 시 deterministic rule 또는 mock으로 전환합니다.",
+            "도메인이 명시적으로 허용한 경우에만 deterministic fallback을 사용하고, 미허용 영역은 오류를 그대로 드러냅니다.",
             "Provider, model, latency, token usage와 failure reason을 기록합니다.",
           ),
+          callout("Mock은 model 품질 gate가 아닙니다", "정적 demo data와 AWS outage read-only data는 시연 지속성 수단입니다. Schema parse, mock 성공 또는 낮은 loss를 semantic quality나 live provider 성공으로 간주하지 않습니다.", "warning"),
         ),
         section("evidence", "Evidence Gates",
           list(
@@ -431,7 +507,7 @@ window.CAREERTUNER_WIKI = (() => {
           ),
         ),
         section("operation", "Validation and Operation",
-          paragraph("JSON schema, domain validator, input/output budget, timeout/retry, usage/failure log, prompt/model version과 user confirmation을 결합합니다. Spring bean과 Jackson convention test가 provider 확장 시 runtime ambiguity를 차단합니다."),
+          paragraph("JSON schema, domain validator, input/output budget, timeout/retry, usage/failure log, prompt/model version과 user confirmation을 결합합니다. E처럼 최신 comparison run이 실패한 영역은 mock이나 fallback 수치로 대체하지 않고 미검증 상태로 남깁니다. Spring bean과 Jackson convention test가 provider 확장 시 runtime ambiguity를 차단합니다."),
         ),
         section("safety", "Safety Boundary",
           callout("Nonverbal signal은 채용 판정이 아닙니다", "음성·표정·시선·자세 결과는 연습 delivery 개선 참고자료로만 사용합니다. Raw media와 model request/response는 공개하지 않습니다.", "warning"),
@@ -450,25 +526,33 @@ window.CAREERTUNER_WIKI = (() => {
       [
         section("map", "A-F Model Map",
           table(
-            ["영역", "Model role", "Priority"],
+            ["영역", "Model / role", "현재 evidence verdict"],
             [
-              ["A", "Resume/spec extraction", "기술 stack·keyword"],
-              ["B", "Posting classification/extraction", "필수·우대 조건"],
-              ["C", "Fit and career strategy", "Evidence-aware fit"],
-              ["D", "Interview question/scoring", "Answer evaluation"],
-              ["E", "Correction", "Cover letter/answer preservation"],
-              ["F", "Community moderation", "Inappropriate classification"],
+              ["A", "Qwen3-4B Profile LoRA v4", "3,000 samples · 0.8145% trainable; artifact local exclude, runtime default OFF"],
+              ["B", "Qwen3-4B R1/R2 + OCR worker", "R1 runtime schema 10 vs train 8 drift; R2 unknown 160/319와 canonical gate gap"],
+              ["C", "Qwen2.5-3B Career Strategy QLoRA", "Rank 8/16/32 campaign; r16 contract 95.0%, r32 E1 6.7% one-seed trade-off"],
+              ["D", "Qwen2.5-3B text QLoRA + LightGBM + faster-whisper", "Golden20 F16/Q4 MAE 7.90/8.15, latency 약 1.37/0.70초"],
+              ["E", "Delivery-s Correction QLoRA", "F16 gate는 통과; 최신 F16/Q4 비교 run 실패로 비교 수치 없음"],
+              ["F", "Qwen/Gemma/VL/BGE-M3 self-hosted integration", "careertuner-mod runtime tag는 provenance·digest가 없어 fine-tune 성과에서 제외"],
             ],
           ),
         ),
         section("career", "Career Strategy",
-          paragraph("C model은 APPLY/COMPLEMENT/HOLD 판단, 부족 역량과 action을 공고 evidence와 profile fact로 설명합니다. Balanced synthetic seed, deterministic validator, mixed occupation, hardcase와 semantic judge를 사용합니다."),
+          paragraph("C model은 APPLY/COMPLEMENT/HOLD 판단, 부족 역량과 action을 공고 evidence와 profile fact로 설명합니다. F16과 Q4의 contract는 95.0%와 88.3%, latency는 약 5.24초와 2.66초, GPU는 약 7,415MiB와 3,357MiB였습니다. 단순 RAG는 현재 비활성이고 evidence gate·semantic judge를 함께 사용합니다."),
         ),
         section("correction", "Correction and Interview",
           paragraph("E model은 자기소개서·답변·이력서·portfolio 표현을 통합하고 원문 사실 보존과 hallucination 방지를 gate로 둡니다. D answer-scoring model과 nonverbal LightGBM track은 질문·평가·delivery feedback을 분리합니다."),
         ),
         section("worker", "Document Worker",
           paragraph("Job Posting Worker는 PDF/image extraction, OCR runtime, Docker smoke와 release readiness를 담당하고 backend extraction status·review flow와 연결됩니다."),
+        ),
+        section("gates", "Interpretation and License Gates",
+          list(
+            "One-seed result는 안정적인 우위가 아니라 다음 반복 후보로 기록합니다.",
+            "Mock success, JSON schema parse와 낮은 loss는 semantic quality를 증명하지 않습니다.",
+            "C/D/E의 Qwen2.5-3B base는 상업 배포 전에 별도 license gate가 필요합니다.",
+            "Missing artifact, model digest, training manifest와 live provider credential은 source 구현과 분리된 운영 gate입니다.",
+          ),
         ),
         section("artifacts", "Artifact Boundaries",
           table(
@@ -498,13 +582,24 @@ window.CAREERTUNER_WIKI = (() => {
         ),
         section("mobile", "Android and iOS",
           table(
-            ["Platform", "Build and boundary"],
+            ["Platform", "확인된 evidence", "남은 live gate"],
             [
-              ["PWA", "Browser install; sensitive data는 장기 cache하지 않음"],
-              ["Android", "Vite mock -> cap sync -> Gradle APK; native permission/deep link/signing"],
-              ["iOS simulator", "macOS/Xcode unsigned build; paid account 불필요"],
-              ["iOS distribution", "Real device/TestFlight부터 signing과 developer program 필요"],
+              ["PWA/Web", "Shared React surface, server-first sensitive data와 platform notification contract", "AWS-first recovery drill과 변경 UI smoke"],
+              ["Android", "PR #395 emulator + live-signed verified App Link PASS", "최신 candidate install과 targeted UI regression"],
+              ["iOS", "Regenerated project, AASA/entitlement와 unsigned build path", "Team ID, signed device와 두 exact Universal Link"],
+              ["Qt desktop", "PR #395 Release/CTest/package/login/theme/8 handoff PASS", "Candidate backend smoke; server prep job/device persistence는 미구현"],
             ],
+          ),
+        ),
+        section("native-auth", "Native OAuth and App Links",
+          paragraph("Android/iOS social login은 Capacitor Browser에서 PKCE SHA-256을 사용하고 3분 one-time handoff로 app에 돌아옵니다. 공식 provider HTTPS URL, canonical callback host, exact path와 43-character code만 허용하며 token query·duplicate parameter·lookalike host를 거부합니다."),
+        ),
+        section("shared-contract", "Cross-platform Data Contract",
+          list(
+            "Mobile answer submit은 client submission ID로 idempotent합니다.",
+            "Voice/nonverbal derived result는 session·question·answer relation을 함께 검증합니다.",
+            "Notification destination은 ALL/WEB/MOBILE/DESKTOP으로 나눕니다.",
+            "Qt와 native app의 web handoff가 raw token을 URL이나 handoff table에 남기지 않습니다.",
           ),
         ),
         section("desktop", "Qt Desktop Control Center",
@@ -522,7 +617,7 @@ window.CAREERTUNER_WIKI = (() => {
             [
               ["Zip", "압축 해제 후 실행", "Default documents 또는 `--portable` adjacent folder"],
               ["Setup", "User-local install, shortcut와 uninstall", "Installed setting"],
-              ["Portable exe", "Self-extracting one-file launcher", "Adjacent data folder, LocalAppData fallback"],
+              ["Portable exe", "Self-extracting one-file launcher", "Adjacent data folder, OS user-data fallback"],
             ],
           ),
         ),
@@ -555,6 +650,18 @@ window.CAREERTUNER_WIKI = (() => {
         section("sanitized", "Sanitized Public Deployment",
           paragraph("Deploy workflow는 typecheck, mock build와 secret scan 후 static artifact만 public repo에 보냅니다. `/Obsidian/` knowledge asset은 frontend redeploy에서도 보존하고 latest Pages commit과 Wiki count를 다시 확인합니다."),
         ),
+        section("baselines", "Source and Execution Baselines",
+          table(
+            ["기준", "값", "현재 의미"],
+            [
+              ["Latest product source", "d00a57fc", "PR #408/#409 UI delta까지 source review"],
+              ["Obsidian synthesis", "2c4b11a9", "교차 영역 전면 ingest 기준"],
+              ["Vault merge", "114b6d91", "공개 projection의 지식 source"],
+              ["Full execution", "PR #395 · 30a5511a", "Backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
+            ],
+          ),
+          paragraph("d00a57fc에서는 AI 상담 공백 사유와 커뮤니티 desktop width 두 path를 source diff로 다시 확인했습니다. 최신 head의 전체 platform suite를 이 projection 작업에서 다시 실행했다고 주장하지 않습니다."),
+        ),
         section("gates", "Release Gates",
           list(
             "Frontend typecheck와 mock/production build",
@@ -565,7 +672,15 @@ window.CAREERTUNER_WIKI = (() => {
           ),
         ),
         section("mock", "Mock Data Contract",
-          paragraph("Mock registry는 user/admin domain의 method/path contract를 재현합니다. 미등록 API는 명시적 demo limitation으로 처리하고 실제 production data나 credential에 의존하지 않는 repeatable portfolio를 제공합니다."),
+          paragraph("정적 mock demo는 user/admin method/path contract를 재현합니다. 운영 장애 fallback은 실제 API를 먼저 호출하고 network/502/503/504와 readiness·DB DOWN을 함께 확인한 뒤에만 read-only mock을 사용합니다. 정상 AWS를 mock보다 낮은 우선순위로 두지 않습니다."),
+        ),
+        section("outage", "Outage and Recovery Contract",
+          list(
+            "DB connection/resource failure는 503, constraint·bad SQL·application bug는 500으로 유지합니다.",
+            "Outage banner가 저장되지 않음을 알리고 social OAuth와 Sites payment를 차단합니다.",
+            "Recovery polling과 online/focus event가 readiness 복구를 확인하면 real mode로 reload합니다.",
+            "장애 drill은 write 비저장, mock 진입 조건과 recovery 전환을 함께 확인합니다.",
+          ),
         ),
         section("failure", "Common Failure Signals",
           table(
@@ -578,6 +693,65 @@ window.CAREERTUNER_WIKI = (() => {
               ["Wiki rollback", "Automated deploy의 Obsidian preservation과 latest commit"],
             ],
           ),
+        ),
+      ],
+    ),
+
+    projectPage(
+      "project/readiness-refresh",
+      "Demo Readiness Refresh — 2026-07-13",
+      "project",
+      "관리자 권한, identity, DB lifecycle, AWS-first 장애 demo, A~F AI와 세 platform의 source verdict·실행 증거·남은 live gate를 분리한 공개 시연 준비 원장입니다.",
+      ["project", "demo-readiness", "verification", "security-boundary"],
+      ["project/user-admin", "engineering/data-lifecycle", "ai-ml/model-portfolio", "delivery/mobile-desktop", "delivery/release-demo"],
+      ["docs/verification/DEMO_READINESS_LEDGER.md", "docs/verification/demo-readiness-checks.json", "frontend/MOBILE_BUILD.md", "desktop/README.md", "docs/AI_REPORT/CAREERTUNER_SELF_AI_MODEL_DEEP_DIVE.md"],
+      [
+        section("baselines", "Baseline Semantics",
+          table(
+            ["기준", "값", "해석"],
+            [
+              ["Latest product source", "d00a57fc", "PR #408/#409까지 포함한 최신 source diff 기준"],
+              ["Obsidian synthesis source", "2c4b11a9", "교차 영역을 전면 대조한 synthesis 기준"],
+              ["Obsidian vault merge", "114b6d91", "synthesis가 vault main에 병합된 commit"],
+              ["Full release evidence", "PR #395 · 30a5511a", "Backend/frontend/DB/web/Android/desktop/Sites 실행 원장"],
+              ["Current-head full rerun", "미수행", "이 공개 projection은 source review이며 전체 제품 suite 재실행이 아님"],
+            ],
+          ),
+        ),
+        section("verdict", "Cross-boundary Verdict",
+          table(
+            ["영역", "Source / execution evidence", "남은 gate"],
+            [
+              ["Admin", "29-code CRUD catalog, frontend/backend fail-closed; PR #395 USER route 403", "PR #408 문구 targeted regression"],
+              ["Firebase phone", "Client SMS/reCAPTCHA와 backend revoked ID-token trust 분리", "Authorized domain, service account, real phone live test"],
+              ["Native OAuth", "PKCE, exact URL allowlist, one-time hashed handoff; Android signed App Link PASS", "Provider credential callback, iOS signed-device link"],
+              ["DB lifecycle", "Profile snapshot, anonymization, C/D/E/F soft delete·idempotency·orphan guard; MySQL fresh/re-run/AWS patch evidence", "새 patch 발생 시 checksum targeted apply"],
+              ["Outage demo", "Real-first/readiness-confirmed fallback; worker 3-path와 live AWS/Sites health evidence", "장애 drill write 비저장·recovery 전환"],
+              ["A-F AI", "Fine-tune, self-hosted integration, PoC와 미검증 provenance를 분리", "License, missing artifact/digest, live model, human gold"],
+              ["Android", "PR #395 emulator + live-signed App Link PASS", "최신 frontend candidate smoke"],
+              ["iOS", "Unsigned build와 link contract source/CI evidence", "Team ID + signed device + exact Universal Links"],
+              ["Qt desktop", "PR #395 Release/CTest/package/login/theme/8 handoff PASS", "Server prep job/device persistence 미구현; candidate smoke"],
+            ],
+          ),
+        ),
+        section("latest-ui", "Latest UI Delta",
+          list(
+            "PR #408은 FAQ similarity가 threshold를 넘었지만 상담 route가 선택된 경우를 근거 부족 문구와 분리했습니다.",
+            "PR #409는 커뮤니티 글쓰기·스크랩 상세가 desktop에서 mobile 폭처럼 수축하던 width/padding contract를 보정했습니다.",
+            "두 변경은 d00a57fc까지 source diff로 대조했으며 API, DB, 인증·권한 결론을 바꾸지 않습니다.",
+          ),
+        ),
+        section("exit", "Human Demo Exit Checklist",
+          steps(
+            "Strict selector로 PR #395 baseline부터 공개 candidate까지 변경 path와 check mapping을 확정합니다.",
+            "PR #408/#409에 연결된 관리자 문구와 community desktop/mobile responsive smoke를 실행합니다.",
+            "Google/Kakao/Naver, Firebase phone과 실제 유료 AI를 secret 노출 없이 live 확인하고 미준비 provider는 명시적으로 비활성화합니다.",
+            "Android signed candidate, iOS signed device, Qt candidate backend smoke를 platform별 gate에 맞춰 확인합니다.",
+            "AWS 정상 시 real data 우선, 준비된 장애 drill에서만 mock 진입, 복구 뒤 real mode 복귀를 확인합니다.",
+          ),
+        ),
+        section("freshness", "Freshness Contract",
+          paragraph("최신 source SHA, synthesis source SHA, vault merge SHA와 execution baseline SHA를 서로 다른 필드로 유지합니다. 이후 변경 path가 admin/auth/data/outage/platform/AI 경계와 겹칠 때만 targeted re-ingest하며 unrelated commit 때문에 완료 날짜만 갱신하지 않습니다."),
         ),
       ],
     ),
@@ -679,7 +853,7 @@ window.CAREERTUNER_WIKI = (() => {
       "evidence/portfolio-map",
       "Portfolio Evidence Map",
       "evidence",
-      "Graphify extraction, 110-node curated graph, project Wiki와 live demo를 연결해 기능 주장을 실제 source path로 검토하게 합니다.",
+      "Graphify extraction, {{evidence}}-node curated graph, project Wiki와 live demo를 연결해 기능 주장을 실제 source path로 검토하게 합니다.",
       ["evidence", "portfolio", "graphify", "source-map"],
       ["project/overview", "ai-ml/orchestration-evidence", "delivery/release-demo", "evidence/catalog"],
       ["docs/obsidian-vault/graphify-out/GRAPH_REPORT.md", "Obsidian/SecondBrain/graph-data.js", "docs/ARCHITECTURE.md", "backend", "frontend/src"],
@@ -723,7 +897,7 @@ window.CAREERTUNER_WIKI = (() => {
       "evidence/catalog",
       "Project Evidence Catalog",
       "evidence",
-      "110개 Second Brain node를 제품·engineering·AI/ML·data·release·docs evidence page로 연결하는 검색 진입점입니다.",
+      "{{evidence}}개 Second Brain node를 제품·engineering·AI/ML·data·release·docs evidence page로 연결하는 검색 진입점입니다.",
       ["evidence", "catalog", "graph", "code-path"],
       ["evidence/portfolio-map", "project/overview", "graph-report"],
       ["Obsidian/SecondBrain/graph-data.js"],
@@ -749,7 +923,7 @@ window.CAREERTUNER_WIKI = (() => {
           ),
         ),
         section("visibility", "Navigation Policy",
-          paragraph("110개 generated page를 sidebar에 항상 펼치지 않습니다. Curated article과 catalog를 기본 navigation에 두고, evidence page는 graph click, connected link와 search result에서 노출합니다."),
+          paragraph("{{evidence}}개 generated page를 sidebar에 항상 펼치지 않습니다. Curated article과 catalog를 기본 navigation에 두고, evidence page는 graph click, connected link와 search result에서 노출합니다."),
         ),
         section("scope", "Public Boundary",
           callout("구조는 공개하고 민감값은 제외합니다", "Repo-relative code path와 implementation point는 portfolio evidence로 공개하지만 credential, private endpoint와 raw model output은 포함하지 않습니다."),
@@ -1518,7 +1692,7 @@ window.CAREERTUNER_WIKI = (() => {
         ),
         section("query", "Query와 Secret Check",
           code("powershell", "graphify query \"CareerTuner release flow\"\npython -m graphify.serve graphify-out/graph.json"),
-          code("powershell", "rg -n \"API_KEY|SECRET|PASSWORD|TOKEN|client_secret|C:\\\\Users|AppData\" graphify-out wiki raw"),
+          code("powershell", "rg -n \"API_KEY|SECRET|PASSWORD|TOKEN|client_secret|local-path|private-endpoint\" graphify-out wiki raw"),
           callout("Private graph와 public graph를 분리합니다", "MCP/HTTP query server를 agent와 연결할 때도 공개 subset과 원본 graph의 접근 경계를 따로 유지합니다.", "warning"),
         ),
       ],
@@ -1583,9 +1757,16 @@ window.CAREERTUNER_WIKI = (() => {
       ["wiki-log", "timeline", "ingest"],
       ["index", "concepts/llm-wiki", "systems/llm-wiki-architecture", "operations/llm-wiki-ingest"],
       [
+        section("timeline-2026-07-13", "2026-07-13",
+          timeline(
+            ["ingest", "Demo readiness refresh", "Admin 29-code permission, Firebase/native identity, DB lifecycle, AWS-first outage, A~F evidence와 platform live gate를 2c4b11a9 source 기준으로 합성했습니다."],
+            ["verify", "Latest product UI delta", "d00a57fc까지 PR #408 AI 상담 공백 사유와 PR #409 community desktop width 두 path를 source diff로 대조했습니다."],
+            ["publish", "Public knowledge projection", "114b6d91 vault merge의 공개 가능한 판단을 {{evidence}}개 graph evidence와 {{curated}}개 curated article에 반영했습니다."],
+          ),
+        ),
         section("timeline", "2026-07-10",
           timeline(
-            ["ingest", "CareerTuner canonical project knowledge", "제품·지원 건·UX·backend/API·frontend/mock·data·AI/ML·mobile/desktop·release·repository/team 구조를 13개 project article로 합성하고 110개 graph node를 evidence page로 연결했습니다."],
+            ["ingest", "CareerTuner canonical project knowledge", "제품·지원 건·UX·backend/API·frontend/mock·data·AI/ML·mobile/desktop·release·repository/team 구조를 13개 project article로 합성하고 당시 graph node를 evidence page로 연결했습니다."],
             ["ingest", "Karpathy LLM Wiki full integration", "한 장 요약 수준의 초기 ingest를 보완해 architecture, schema, compounding, index/log, ingest/query/lint, search와 Obsidian workflow를 canonical page로 분리했습니다."],
             ["ingest", "Karpathy LLM Wiki", "Raw/wiki/schema, ingest/query/lint와 index/log 패턴을 CareerTuner vault 운영 규칙으로 반영했습니다."],
             ["ingest", "Graphify and Obsidian references", "공식 repo, site, package와 실사용 자료를 읽고 Graphify 개념과 실행 runbook을 만들었습니다."],
@@ -1600,7 +1781,8 @@ window.CAREERTUNER_WIKI = (() => {
             ["engineering/backend-api", "Spring/MyBatis API platform"],
             ["ai-ml/orchestration-evidence", "AI orchestration과 evidence gate"],
             ["delivery/mobile-desktop", "Mobile과 desktop distribution"],
-            ["evidence/catalog", "110개 graph evidence catalog"],
+            ["evidence/catalog", "{{evidence}}개 graph evidence catalog"],
+            ["project/readiness-refresh", "2026-07-13 교차 영역 시연 준비 refresh"],
             ["systems/llm-wiki-architecture", "Persistent Wiki와 RAG의 차이, 3계층 mapping"],
             ["systems/wiki-schema", "Page, provenance, cross-link와 update 계약"],
             ["concepts/llm-wiki", "LLM Wiki 운영 패턴"],
@@ -1622,6 +1804,10 @@ window.CAREERTUNER_WIKI = (() => {
     ),
   ];
 
+  const curatedPageCount = pages.length;
+  const projectArticleCount = pages.filter(
+    (item) => Array.isArray(item.sourcePaths) && item.id !== "evidence/catalog",
+  ).length;
   const evidencePages = (projectGraph.nodes || []).map((node) => {
     const related = (node.links || []).map((id) => `evidence/${id}`);
     const groupLabel = projectGraph.groups?.[node.group]?.label || node.group || "Project";
@@ -1666,20 +1852,62 @@ window.CAREERTUNER_WIKI = (() => {
   });
 
   pages.push(...evidencePages);
+  const counts = {
+    curated: curatedPageCount,
+    project: projectArticleCount,
+    evidence: evidencePages.length,
+    total: pages.length,
+    sections: pages.reduce((sum, item) => sum + (item.sections?.length || 0), 0),
+  };
+  hydrateCountTokens(pages, counts);
 
   return {
     meta: {
       title: "CareerTuner Public Wiki",
-      updated: "2026-07-10",
-      source: "docs/obsidian-vault/wiki",
+      updated: "2026-07-13",
+      source: "public knowledge projection + source-reviewed product evidence",
       visibility: "portfolio-public",
+      counts,
+      latestSourceSha: "d00a57fc8d1e3499ba6c23acec498c47ac0d5d4c",
+      synthesisSourceSha: "2c4b11a9b39d2bc34343797887722616091203e3",
+      vaultMergeSha: "114b6d91aeef6fb4f3399bad2d7030ca8256d96e",
+      executionBaselineSha: "30a5511a13a6a304fdf13231bfea1afe7a335c2e",
     },
     groups,
     pages,
   };
 
   function page(id, title, group, summary, tags, related, sections, sources = [], options = {}) {
-    return { id, title, group, summary, tags, related, sections, sources, updated: "2026-07-10", ...options };
+    return { id, title, group, summary, tags, related, sections, sources, updated: "2026-07-13", ...options };
+  }
+
+  function hydrateCountTokens(value, counts) {
+    const replacements = {
+      "{{curated}}": String(counts.curated),
+      "{{project}}": String(counts.project),
+      "{{evidence}}": String(counts.evidence),
+      "{{total}}": String(counts.total),
+      "{{sections}}": String(counts.sections),
+    };
+
+    if (typeof value === "string") {
+      return Object.entries(replacements).reduce(
+        (result, [token, replacement]) => result.split(token).join(replacement),
+        value,
+      );
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => {
+        value[index] = hydrateCountTokens(item, counts);
+      });
+      return value;
+    }
+    if (value && typeof value === "object") {
+      Object.keys(value).forEach((key) => {
+        value[key] = hydrateCountTokens(value[key], counts);
+      });
+    }
+    return value;
   }
 
   function projectPage(id, title, group, summary, tags, related, sourcePaths, sections) {
